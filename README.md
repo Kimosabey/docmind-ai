@@ -84,6 +84,8 @@ We have included a built-in debugging tool to visualize the "Brain" of the AI.
 - View real-time statistics on stored vectors.
 - Inspect the raw text chunks that the AI is using to answer your questions.
 
+![Neural Inspector UI](docs/images/docmind_neural_inspector_mockup.png)
+
 ---
 
 ## 🔮 Roadmap (Phase 2 & 3)
