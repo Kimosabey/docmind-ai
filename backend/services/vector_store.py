@@ -2,16 +2,12 @@ import os
 from typing import List
 from langchain_community.vectorstores import Chroma
 from langchain_core.documents import Document
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_openai import OpenAIEmbeddings
 
-# Initialize Embeddings (Local/Free)
-# Using 'all-MiniLM-L6-v2' (GOOD quality, 384 dimensions, faster download)
-# Explicitly set cache folder for Docker compatibility
-embedding_function = HuggingFaceEmbeddings(
-    model_name="all-MiniLM-L6-v2",
-    cache_folder="/tmp/hf_cache",
-    model_kwargs={'device': 'cpu'},
-    encode_kwargs={'normalize_embeddings': False}
+# Initialize Embeddings (OpenAI)
+# Using 'text-embedding-3-small' for cost efficiency and speed
+embedding_function = OpenAIEmbeddings(
+    model="text-embedding-3-small"
 )
 
 def get_vector_store():
