@@ -15,7 +15,8 @@ export const uploadDocument = async (file: File) => {
 };
 
 export const chatWithBot = async (question: string) => {
-    return axios.post(`${API_URL}/chat`, { question });
+    const response = await axios.post(`${API_URL}/chat`, { question });
+    return response.data;
 };
 
 export const getCollectionStats = async () => {
@@ -24,4 +25,9 @@ export const getCollectionStats = async () => {
 
 export const getDebugDocuments = async () => {
     return axios.get(`${API_URL}/debug/documents`);
+};
+
+export const getSystemStatus = async () => {
+    const response = await axios.get(`${API_URL}/system/status`);
+    return response.data;
 };

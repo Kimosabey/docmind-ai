@@ -22,8 +22,12 @@ def process_pdf(file_path: str) -> List[Document]:
     """
     Loads a PDF and splits it into chunks.
     """
+    print(f"DEBUG: Processing PDF at: {file_path}")
+    print(f"DEBUG: File exists: {os.path.exists(file_path)}")
+    
     loader = PyPDFLoader(file_path)
     docs = loader.load()
+    print(f"DEBUG: Loaded {len(docs)} page(s) from PDF")
     
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size=1000,
@@ -32,9 +36,11 @@ def process_pdf(file_path: str) -> List[Document]:
     )
     
     split_docs = text_splitter.split_documents(docs)
+    print(f"DEBUG: Split into {len(split_docs)} chunks")
     
     # Clean up temp file
     if os.path.exists(file_path):
         os.remove(file_path)
-        
+    
+    print(f"DEBUG: Returning {len(split_docs)} chunks")
     return split_docs

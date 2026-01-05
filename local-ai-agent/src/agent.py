@@ -6,10 +6,10 @@ from langchain_community.utilities import SQLDatabase
 from langchain_community.agent_toolkits import create_sql_agent
 from dotenv import load_dotenv
 
-# Load key from parent .env if possible
-# We are in src/, so we go up two levels to local-ai-agent, then up to docmind-ai
-parent_env = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), '.env')
-load_dotenv(parent_env)
+# Load key from local .env file
+# We are in src/, so we go up one level to local-ai-agent
+local_env = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '.env')
+load_dotenv(local_env)
 
 # 1. Initialize the "Brain" (Multi-Model Support)
 llm_provider = os.getenv("LLM_PROVIDER", "openai").lower()

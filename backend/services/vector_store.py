@@ -1,17 +1,17 @@
 import os
-from langchain_openai import OpenAIEmbeddings
+from typing import List
 from langchain_community.vectorstores import Chroma
 from langchain_core.documents import Document
-from typing import List
-from dotenv import load_dotenv
+from langchain_community.embeddings import HuggingFaceEmbeddings
 
-load_dotenv()
-
-CHROMA_URL = os.getenv("CHROMA_URL", "http://localhost:8001")
-
-# Initialize Embeddings (Cost: $0.02 / 1M tokens) -> "Lower Model" for embeddings
-embedding_function = OpenAIEmbeddings(
-    model="text-embedding-3-small"
+# Initialize Embeddings (Local/Free)
+# Using 'all-MiniLM-L6-v2' (GOOD quality, 384 dimensions, faster download)
+# Explicitly set cache folder for Docker compatibility
+embedding_function = HuggingFaceEmbeddings(
+    model_name="all-MiniLM-L6-v2",
+    cache_folder="/tmp/hf_cache",
+    model_kwargs={'device': 'cpu'},
+    encode_kwargs={'normalize_embeddings': False}
 )
 
 def get_vector_store():
@@ -29,15 +29,20 @@ import chromadb
 from chromadb.config import Settings
 
 def get_chroma_client():
+    # Use 'chromadb' (service name) if inside docker, else 'localhost' (local dev)
+    host = os.getenv("CHROMA_HOST", "chromadb")
+    port = int(os.getenv("CHROMA_PORT", 8000)) # Default to internal container port
+    
     client = chromadb.HttpClient(
-        host="localhost", 
-        port=8001,
+        host=host, 
+        port=port,
         settings=Settings(allow_reset=True, anonymized_telemetry=False)
     )
     return client
 
 def get_langchain_chroma():
     client = get_chroma_client()
+    # Ensure embedding function is valid
     return Chroma(
         client=client,
         collection_name="docmind_collection",
@@ -45,8 +50,26 @@ def get_langchain_chroma():
     )
 
 def add_documents_to_store(documents: List[Document]):
+    print(f"DEBUG: Attempting to add {len(documents)} documents.")
+    if not documents:
+        print("DEBUG: No documents to add.")
+        return False
+        
+    try:
+        # Test embedding one doc
+        sample_text = documents[0].page_content
+        print(f"DEBUG: Sample text length: {len(sample_text)}")
+        sample_emb = embedding_function.embed_query(sample_text)
+        print(f"DEBUG: Sample embedding generated. Type: {type(sample_emb)}, Len: {len(sample_emb)}")
+    except Exception as e:
+        print(f"DEBUG: Embedding generation failed: {e}")
+        import traceback
+        traceback.print_exc()
+        raise e
+
     db = get_langchain_chroma()
     db.add_documents(documents)
+    print("DEBUG: Documents added to Chroma.")
     return True
 
 def query_documents(query: str, k: int = 3):

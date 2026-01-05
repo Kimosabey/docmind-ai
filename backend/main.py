@@ -57,6 +57,8 @@ async def upload_document(file: UploadFile = File(...)):
             "filename": file.filename
         }
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/api/chat", response_model=ChatResponse)
@@ -85,3 +87,38 @@ async def get_stats():
 @app.get("/api/debug/documents")
 async def get_docs(limit: int = 20):
     return list_documents(limit=limit)
+
+@app.get("/api/system/status")
+async def get_system_status():
+    """Returns comprehensive AI model and system configuration"""
+    import os
+    import platform
+    import psutil
+    
+    llm_provider = os.getenv("LLM_PROVIDER", "openai").lower()
+    
+    # System metrics
+    cpu_percent = psutil.cpu_percent(interval=0.1)
+    memory = psutil.virtual_memory()
+    
+    return {
+        # AI Models
+        "embedding_model": "all-mpnet-base-v2",
+        "embedding_dimensions": 768,
+        "llm_provider": llm_provider,
+        "llm_model": "llama3" if llm_provider == "ollama" else "gpt-4o-mini",
+        
+        # System Info
+        "os": platform.system(),
+        "os_version": platform.version(),
+        "python_version": platform.python_version(),
+        "cpu_count": psutil.cpu_count(),
+        "cpu_percent": round(cpu_percent, 1),
+        "ram_total_gb": round(memory.total / (1024**3), 2),
+        "ram_used_gb": round(memory.used / (1024**3), 2),
+        "ram_percent": round(memory.percent, 1),
+        
+        # Container info
+        "container": "Docker",
+        "backend": "FastAPI + Uvicorn"
+    }
