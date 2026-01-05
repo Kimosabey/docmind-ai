@@ -1,0 +1,31 @@
+version: '3.9'
+
+services:
+  backend:
+    build: ./backend
+    container_name: docmind-api
+    ports:
+      - "8000:8000"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - CHROMA_URL=http://chromadb:8000
+    depends_on:
+      - chromadb
+    networks:
+      - docmind-network
+
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: docmind-chroma
+    ports:
+      - "8001:8000"
+    volumes:
+      - ./chroma_data:/chroma/chroma
+    environment:
+      - IS_PERSISTENT=TRUE
+    networks:
+      - docmind-network
+
+networks:
+  docmind-network:
+    driver: bridge
