@@ -29,16 +29,25 @@ import chromadb
 from chromadb.config import Settings
 
 def get_chroma_client():
-    # Use 'chromadb' (service name) if inside docker, else 'localhost' (local dev)
-    host = os.getenv("CHROMA_HOST", "chromadb")
-    port = int(os.getenv("CHROMA_PORT", 8000)) # Default to internal container port
+    # Check if we are in "Local Mode" (no Docker)
+    # If CHROMA_HOST is "local" or unset, use an embedded PersistentClient
+    host = os.getenv("CHROMA_HOST", "local")
     
-    client = chromadb.HttpClient(
+    if host == "local":
+        print("DEBUG: Using Local PersistentClient for ChromaDB")
+        # Store data in a folder named 'chroma_data_local' in the project root
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        persist_path = os.path.join(base_dir, "chroma_data_local")
+        return chromadb.PersistentClient(path=persist_path)
+    
+    # Otherwise, assume Docker HTTP Client
+    port = int(os.getenv("CHROMA_PORT", 8000))
+    print(f"DEBUG: Connecting to ChromaDB via HTTP at {host}:{port}")
+    return chromadb.HttpClient(
         host=host, 
         port=port,
         settings=Settings(allow_reset=True, anonymized_telemetry=False)
     )
-    return client
 
 def get_langchain_chroma():
     client = get_chroma_client()
