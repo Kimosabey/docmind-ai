@@ -48,10 +48,17 @@ By using **ChromaDB locally**, we ensure:
 - **Dimensions**: 1536.
 - **Persistence**: Mounted Docker volume (`./chroma_data`).
 
-### C. The Cortex (`backend/services/llm.py`)
-- **Model**: `gpt-4o-mini`.
-- **Temperature**: `0.0` (Deterministic).
-- **System Prompt**: Enforces strict "Answer ONLY from context" rules to minimize hallucinations.
+### C. The Cortex (Multi-Model Support)
+> *New in Phase 3: Switch between Cloud and Local Intelligence.*
+
+![Multi-Model Architecture](docs/images/multi_model_architecture.png)
+
+The system now supports a **Strategy Pattern** for the LLM Provider, controlled via the `LLM_PROVIDER` environment variable.
+
+| Provider             | Model         | Use Case                      | trade-off                          |
+| :------------------- | :------------ | :---------------------------- | :--------------------------------- |
+| **OpenAI** (Default) | `gpt-4o-mini` | Production, Complex Reasoning | Cost ($), External Data Flow       |
+| **Ollama**           | `llama3`      | High-Privacy, Offline, Dev    | Latency (CPU dependent), Zero Cost |
 
 ---
 

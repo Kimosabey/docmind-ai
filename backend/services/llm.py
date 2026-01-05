@@ -1,16 +1,29 @@
 import os
 from langchain_openai import ChatOpenAI
+from langchain_community.chat_models import ChatOllama
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from dotenv import load_dotenv
 
 load_dotenv()
 
-# Initialize LLM (Cost: $0.15 / 1M input tokens) -> "Lower Model" as requested
-llm = ChatOpenAI(
-    model="gpt-4o-mini",
-    temperature=0.0
-)
+# Context-Aware LLM Loader
+llm_provider = os.getenv("LLM_PROVIDER", "openai").lower()
+ollama_url = os.getenv("OLLAMA_BASE_URL", "http://host.docker.internal:11434")
+
+if llm_provider == "ollama":
+    # Local Llama 3
+    llm = ChatOllama(
+        base_url=ollama_url,
+        model="llama3",
+        temperature=0.0
+    )
+else:
+    # Default: OpenAI
+    llm = ChatOpenAI(
+        model="gpt-4o-mini",
+        temperature=0.0
+    )
 
 def generate_answer(context: str, question: str) -> str:
     """

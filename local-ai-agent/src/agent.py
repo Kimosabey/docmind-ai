@@ -1,6 +1,7 @@
 import os
 import sys
 from langchain_openai import ChatOpenAI
+from langchain_community.chat_models import ChatOllama
 from langchain_community.utilities import SQLDatabase
 from langchain_community.agent_toolkits import create_sql_agent
 from dotenv import load_dotenv
@@ -10,15 +11,24 @@ from dotenv import load_dotenv
 parent_env = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), '.env')
 load_dotenv(parent_env)
 
-if not os.getenv("OPENAI_API_KEY"):
-    print("❌ Error: OPENAI_API_KEY not found. Please ensure it is set in your .env file.")
-    sys.exit(1)
+# 1. Initialize the "Brain" (Multi-Model Support)
+llm_provider = os.getenv("LLM_PROVIDER", "openai").lower()
 
-# 1. Initialize the "Brain"
-llm = ChatOpenAI(
-    model="gpt-4o-mini",
-    temperature=0
-)
+if llm_provider == "ollama":
+    print("🧠 Using Local Brain: Ollama (Llama 3)")
+    llm = ChatOllama(
+        model="llama3",
+        temperature=0
+    )
+else:
+    print("🧠 Using Cloud Brain: OpenAI (GPT-4o-mini)")
+    if not os.getenv("OPENAI_API_KEY"):
+        print("❌ Error: OPENAI_API_KEY not found.")
+        sys.exit(1)
+    llm = ChatOpenAI(
+        model="gpt-4o-mini",
+        temperature=0
+    )
 
 # 2. Connect to the "Tool" (Database)
 # DB is in ../data/sales.db relative to this script

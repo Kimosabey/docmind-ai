@@ -34,6 +34,12 @@
 - **Why Overlap?** If a sentence like *'The fine is $500'* is cut between two chunks, the meaning is lost. Overlap ensures semantic continuity.
 - **Why 1000?** It's roughly one paragraph. Small enough to be specific, large enough to carry context for the embedding model (`text-embedding-3-small`)."
 
+### Q4.5: You recently added Llama-3 support. How did you architect that switch?
+"I implemented a **Strategy Pattern** (or pseudo-factory) in `llm.py`. Instead of hardcoding `ChatOpenAI`, I check the `LLM_PROVIDER` environment variable at runtime.
+- If `openai`: Instantiate `ChatOpenAI` (LangChain wrapper).
+- If `ollama`: Instantiate `ChatOllama` pointed at `host.docker.internal`.
+This allows the same application code to run in 'Secure Offline Mode' for defense clients or 'Cloud Mode' for commercial startups without code changes."
+
 ---
 
 ## 🚀 Scenario Based Questions

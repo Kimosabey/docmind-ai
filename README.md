@@ -88,8 +88,8 @@ We have included a built-in debugging tool to visualize the "Brain" of the AI.
 
 ## 🔮 Roadmap (Phase 2 & 3)
 - [x] **Phase 1**: Hybrid RAG Core (Completed)
-- [ ] **Phase 2**: Local Agentic Workflows (Reasoning on SQL)
-- [ ] **Phase 3**: Multi-Model Support (Ollama/Llama-3 Integration)
+- [x] **Phase 2**: Local Agentic Workflows (Reasoning on SQL)
+- [x] **Phase 3**: Multi-Model Support (Ollama/Llama-3 Integration)
 
 ---
 *Built with ❤️ for the Advanced Agentic Coding Project.*
