@@ -33,6 +33,23 @@ By using **ChromaDB locally**, we ensure:
 
 ---
 
+## 🔄 Complete RAG Pipeline
+
+![RAG Pipeline Flow](images/rag_pipeline_flow.png)
+
+The diagram above shows the complete end-to-end flow from document upload to answer generation. Each step is optimized for performance and privacy:
+
+1. **Upload**: User submits PDF through frontend
+2. **Extract**: Backend parses PDF text
+3. **Chunk**: Text split into semantic segments
+4. **Embed**: Chunks converted to 1536-dimension vectors
+5. **Store**: Vectors saved locally in ChromaDB
+6. **Query**: User asks a question
+7. **Search**: Find top-3 most similar chunks
+8. **Generate**: LLM creates answer from context
+
+---
+
 ## System Components
 
 ### A. The Ingestion Engine (`backend/services/ingestion.py`)

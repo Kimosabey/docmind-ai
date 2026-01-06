@@ -1,36 +1,97 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎨 DocMind AI Frontend
 
-## Getting Started
+> Modern, responsive chat interface built with **Next.js 14** + **Tailwind CSS** + **Framer Motion**.
 
-First, run the development server:
+## 🎯 Technical Capabilities
+
+The frontend delivers a production-grade user experience with:
+
+- **Next.js 14 App Router**: Server/client component architecture with optimized TypeScript patterns
+- **Real-Time Interaction**: Streaming responses, optimistic updates, and intelligent loading states
+- **Motion Design**: Framer Motion-powered micro-interactions and smooth transitions
+- **Clean Architecture**: Service layer abstraction for maintainable API integration
+- **Responsive Layout**: Mobile-first design system built with Tailwind CSS
+
+---
+
+## 🚀 Quick Start
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📁 Project Structure
 
-## Learn More
+```
+frontend/
+├── app/                    # Next.js 14 App Router
+│   ├── layout.tsx         # Root layout with providers
+│   └── page.tsx           # Main chat interface page
+├── components/
+│   ├── ChatInterface.tsx  # Main chat component
+│   └── NeuralInspector.tsx # Vector DB debugging sidebar
+├── services/
+│   └── api.ts             # Centralized API client
+└── public/                # Static assets
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🎨 Key Features
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 1. **Chat Interface**
+- Real-time message streaming
+- Markdown rendering for AI responses
+- File upload with drag-and-drop
+- Loading states and error handling
 
-## Deploy on Vercel
+### 2. **Neural Inspector** (Debugging Tool)
+- Live vector database statistics
+- Document chunk visualization
+- Collection management
+- Real-time updates
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 3. **Animations**
+- Framer Motion for smooth transitions
+- Vanta.js background effects
+- Micro-interactions on hover/click
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🧪 Development
+
+```bash
+# Run development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Start production server
+npm start
+
+# Run linter
+npm run lint
+```
+
+---
+
+## 🔧 Tech Stack
+
+| Technology        | Purpose                         |
+| :---------------- | :------------------------------ |
+| **Next.js 14**    | React framework with App Router |
+| **TypeScript**    | Type-safe development           |
+| **Tailwind CSS**  | Utility-first styling           |
+| **Framer Motion** | Declarative animations          |
+| **Axios**         | HTTP client for API calls       |
+| **Lucide Icons**  | Modern icon library             |
+
+---
+
+*Part of the DocMind AI Enterprise Intelligence Platform.*

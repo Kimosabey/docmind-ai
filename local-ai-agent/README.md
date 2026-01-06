@@ -3,6 +3,21 @@
 
 ![Agent Workflow](docs/images/agent_workflow_diagram.png)
 
+## 🎯 Technical Overview
+
+![ReAct Pattern](../docs/images/agent_react_pattern.png)
+
+This module implements the **ReAct (Reason + Act) Pattern** for autonomous database querying. The agent architecture enables:
+
+- **Autonomous Query Generation**: Self-guided SQL query construction based on natural language input
+- **Schema-Aware Reasoning**: Dynamic database schema inspection and intelligent query planning
+- **Multi-Step Problem Solving**: Iterative reasoning loop combining observation, action, and synthesis
+- **Production-Ready Agent Framework**: LangChain-powered orchestration with extensible tool interfaces
+
+**Technical Foundation**: Built on established design patterns used in production AI systems including GitHub Copilot, autonomous code assistants, and enterprise analytics platforms.
+
+---
+
 ## 📌 What is this?
 This is an implementations of the **ReAct (Reason + Act)** pattern.
 Instead of just answering from pre-trained knowledge, this Agent:

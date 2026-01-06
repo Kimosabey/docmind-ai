@@ -3,6 +3,21 @@
 
 ![DocMind Architecture](docs/images/docmind_architecture_diagram.png)
 
+## 🎯 Key Features
+
+![Technical Architecture](docs/images/learning_outcomes.png)
+
+DocMind AI implements a **production-grade Hybrid RAG architecture** with the following capabilities:
+
+- **Privacy-First Design**: Local vector storage ensures sensitive data never leaves your infrastructure while leveraging cloud AI for reasoning
+- **Semantic Search Engine**: Advanced similarity search using ChromaDB with OpenAI embeddings for accurate document retrieval
+- **Intelligent Orchestration**: Optimized document chunking, retrieval pipelines, and context management via LangChain
+- **Enterprise-Ready**: Fully containerized with Docker, high-performance FastAPI backend, and designed for scalability
+
+**Core Value Proposition**: Battle-tested architecture solving critical enterprise challenges—data privacy, AI hallucinations, and token context limitations—without compromising on inference quality.
+
+---
+
 ## 🌌 The Ecosystem Infographic
 > *A high-level view of how all components fit together.*
 
