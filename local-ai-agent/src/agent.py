@@ -6,24 +6,24 @@ from langchain_community.utilities import SQLDatabase
 from langchain_community.agent_toolkits import create_sql_agent
 from dotenv import load_dotenv
 
-# Load key from local .env file
-# We are in src/, so we go up one level to local-ai-agent
-local_env = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '.env')
-load_dotenv(local_env)
+# Load key from root .env file (consolidated config)
+# We are in local-ai-agent/src/, so we go up two levels to project root
+root_env = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), '.env')
+load_dotenv(root_env)
 
 # 1. Initialize the "Brain" (Multi-Model Support)
 llm_provider = os.getenv("LLM_PROVIDER", "openai").lower()
 
 if llm_provider == "ollama":
-    print("🧠 Using Local Brain: Ollama (Llama 3)")
+    print("[AI] Using Local Brain: Ollama (Llama 3)")
     llm = ChatOllama(
         model="llama3",
         temperature=0
     )
 else:
-    print("🧠 Using Cloud Brain: OpenAI (GPT-4o-mini)")
+    print("[AI] Using Cloud Brain: OpenAI (GPT-4o-mini)")
     if not os.getenv("OPENAI_API_KEY"):
-        print("❌ Error: OPENAI_API_KEY not found.")
+        print("[ERROR] OPENAI_API_KEY not found.")
         sys.exit(1)
     llm = ChatOpenAI(
         model="gpt-4o-mini",
@@ -44,12 +44,12 @@ agent_executor = create_sql_agent(
 )
 
 def ask_agent(question):
-    print(f"\n🤖 Agent thinking about: '{question}'...")
+    print(f"\n[AGENT] Thinking about: '{question}'...")
     try:
         response = agent_executor.invoke(question)
-        print(f"💡 Answer: {response['output']}")
+        print(f"[ANSWER] {response['output']}")
     except Exception as e:
-        print(f"❌ Error: {e}")
+        print(f"[ERROR] {e}")
 
 if __name__ == "__main__":
     print("Initializing Local AI Agent...")
