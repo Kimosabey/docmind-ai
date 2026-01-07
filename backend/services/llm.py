@@ -18,6 +18,7 @@ load_dotenv()
 
 # Initialize Both Clients
 ollama_url = os.getenv("OLLAMA_BASE_URL", "http://host.docker.internal:11434")
+ollama_model = os.getenv("OLLAMA_MODEL", "llama3.2")  # Sync with server model
 
 openai_llm = ChatOpenAI(
     model="gpt-4o-mini",
@@ -28,7 +29,7 @@ openai_llm = ChatOpenAI(
 # If Ollama isn't running, this object creation is fine, it only fails on invoke
 ollama_llm = ChatOllama(
     base_url=ollama_url,
-    model="llama3.2",
+    model=ollama_model,
     temperature=0.0
 )
 
