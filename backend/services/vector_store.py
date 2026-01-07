@@ -10,7 +10,7 @@ load_dotenv()
 
 llm_provider = os.getenv("LLM_PROVIDER", "openai").lower()
 ollama_url = os.getenv("OLLAMA_BASE_URL", "http://host.docker.internal:11434")
-ollama_embed_model = os.getenv("OLLAMA_EMBED_MODEL", "nomic-embed-text")
+ollama_embed_model = os.getenv("OLLAMA_EMBED_MODEL", "mxbai-embed-large")
 
 if llm_provider == "ollama":
     print(f"DEBUG: Using Ollama Embeddings ({ollama_embed_model})")

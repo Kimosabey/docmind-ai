@@ -1,15 +1,7 @@
-import os
-from langchain_openai import ChatOpenAI
-from langchain_community.chat_models import ChatOllama
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.output_parsers import StrOutputParser
-from dotenv import load_dotenv
-
-load_dotenv()
 
 import os
 from langchain_openai import ChatOpenAI
-from langchain_community.chat_models import ChatOllama
+from langchain_ollama import ChatOllama
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from dotenv import load_dotenv
@@ -18,7 +10,7 @@ load_dotenv()
 
 # Initialize Both Clients
 ollama_url = os.getenv("OLLAMA_BASE_URL", "http://host.docker.internal:11434")
-ollama_model = os.getenv("OLLAMA_MODEL", "llama3.2")  # Sync with server model
+ollama_model = os.getenv("OLLAMA_MODEL", "llama3")  # Default to Server Standard (llama3:latest)
 
 openai_llm = ChatOpenAI(
     model="gpt-4o-mini",
