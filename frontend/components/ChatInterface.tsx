@@ -41,7 +41,6 @@ export default function ChatInterface() {
         }]);
     }, []);
 
-    // Fetch system status and collection stats
     useEffect(() => {
         getSystemStatus().then(setSystemStatus).catch(console.error);
         getCollectionStats().then(res => setCollectionStats(res.data)).catch(console.error);
@@ -52,6 +51,17 @@ export default function ChatInterface() {
         }, 10000);
         return () => clearInterval(interval);
     }, []);
+
+    // Auto-reset chat when switching models
+    useEffect(() => {
+        const modelName = selectedModel === 'openai' ? 'GPT-4o mini' : 'Llama 3';
+        setMessages([{
+            id: Date.now().toString(),
+            role: "bot",
+            text: `Switched to ${modelName}. Ready to answer your questions!`,
+            timestamp: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+        }]);
+    }, [selectedModel]);
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
