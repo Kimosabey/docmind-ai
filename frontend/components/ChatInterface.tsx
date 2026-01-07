@@ -35,6 +35,7 @@ export default function ChatInterface() {
     const [isDarkMode, setIsDarkMode] = useState(true);
     const [systemStatus, setSystemStatus] = useState<any>(null);
     const [collectionStats, setCollectionStats] = useState<any>(null);
+    const [selectedModel, setSelectedModel] = useState<'openai' | 'ollama'>('openai');
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     // Fetch system status and collection stats
@@ -109,7 +110,7 @@ export default function ChatInterface() {
         setIsTyping(true);
 
         try {
-            const response = await chatWithBot(input);
+            const response = await chatWithBot(input, selectedModel);
             const botMessage: Message = {
                 id: (Date.now() + 1).toString(),
                 role: "bot",
@@ -176,26 +177,31 @@ export default function ChatInterface() {
                     </div>
 
                     <div className="flex items-center gap-4">
-                        {/* Model Status */}
+                        {/* Model Toggle */}
                         {systemStatus && (
-                            <motion.div
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                className={`hidden lg:flex items-center gap-2.5 px-4 py-2.5 backdrop-blur-sm rounded-xl border ${isDarkMode
-                                    ? 'bg-[#0a0d14]/80 border-white/10'
-                                    : 'bg-white/80 border-slate-200'
-                                    }`}
-                            >
-                                <Cpu className={`w-4 h-4 ${isDarkMode ? 'text-cyan-400' : 'text-cyan-600'}`} />
-                                <div className="flex flex-col">
-                                    <span className={`text-[10px] uppercase tracking-wide font-medium ${isDarkMode ? 'text-slate-500' : 'text-slate-600'}`}>AI Models</span>
-                                    <div className="flex gap-2 mt-0.5">
-                                        <span className={`text-xs font-mono ${isDarkMode ? 'text-emerald-400' : 'text-emerald-600'}`}>{systemStatus.embedding_dimensions}D</span>
-                                        <span className={`text-xs ${isDarkMode ? 'text-slate-600' : 'text-slate-400'}`}>•</span>
-                                        <span className={`text-xs font-mono ${isDarkMode ? 'text-purple-400' : 'text-purple-600'}`}>{systemStatus.llm_provider === 'ollama' ? 'Llama3' : 'GPT-4o'}</span>
-                                    </div>
-                                </div>
-                            </motion.div>
+                            <div className={`hidden lg:flex items-center p-1 rounded-xl border ${isDarkMode
+                                ? 'bg-[#0a0d14]/80 border-white/10'
+                                : 'bg-white/80 border-slate-200'
+                                }`}>
+                                <button
+                                    onClick={() => setSelectedModel('openai')}
+                                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${selectedModel === 'openai'
+                                        ? (isDarkMode ? 'bg-purple-500/20 text-purple-400' : 'bg-purple-100 text-purple-700')
+                                        : (isDarkMode ? 'text-slate-500 hover:text-slate-300' : 'text-slate-400 hover:text-slate-600')
+                                        }`}
+                                >
+                                    GPT-4o
+                                </button>
+                                <button
+                                    onClick={() => setSelectedModel('ollama')}
+                                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${selectedModel === 'ollama'
+                                        ? (isDarkMode ? 'bg-cyan-500/20 text-cyan-400' : 'bg-cyan-100 text-cyan-700')
+                                        : (isDarkMode ? 'text-slate-500 hover:text-slate-300' : 'text-slate-400 hover:text-slate-600')
+                                        }`}
+                                >
+                                    Llama 3
+                                </button>
+                            </div>
                         )}
 
                         {/* Theme Toggle */}
@@ -520,11 +526,13 @@ export default function ChatInterface() {
 
                                             <div className={`rounded-xl p-3 border ${isDarkMode ? 'bg-[#131722] border-white/10' : 'bg-slate-50 border-slate-200'}`}>
                                                 <div className="flex justify-between items-start mb-2">
-                                                    <Database className={`w-5 h-5 ${isDarkMode ? 'text-cyan-400' : 'text-cyan-600'}`} />
-                                                    <div className="w-1.5 h-1.5 rounded-full bg-cyan-400"></div>
+                                                    <Activity className={`w-5 h-5 ${isDarkMode ? 'text-purple-400' : 'text-purple-600'}`} />
+                                                    <div className="w-1.5 h-1.5 rounded-full bg-purple-400"></div>
                                                 </div>
-                                                <div className={`text-[10px] uppercase tracking-wide font-bold mb-0.5 ${isDarkMode ? 'text-slate-500' : 'text-slate-600'}`}>Vector DB</div>
-                                                <div className={`text-lg font-bold ${isDarkMode ? 'text-cyan-400' : 'text-cyan-600'}`}>Online</div>
+                                                <div className={`text-[10px] uppercase tracking-wide font-bold mb-0.5 ${isDarkMode ? 'text-slate-500' : 'text-slate-600'}`}>Memory</div>
+                                                <div className={`text-lg font-bold font-mono ${isDarkMode ? 'text-slate-200' : 'text-slate-900'}`}>
+                                                    {systemStatus?.ram_percent || 0}<span className={`text-xs ml-0.5 ${isDarkMode ? 'text-slate-500' : 'text-slate-600'}`}>%</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

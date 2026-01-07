@@ -14,8 +14,8 @@ export const uploadDocument = async (file: File) => {
     });
 };
 
-export const chatWithBot = async (question: string) => {
-    const response = await axios.post(`${API_URL}/chat`, { question });
+export const chatWithBot = async (question: string, model: 'openai' | 'ollama' = 'openai') => {
+    const response = await axios.post(`${API_URL}/chat`, { question, model });
     return response.data;
 };
 

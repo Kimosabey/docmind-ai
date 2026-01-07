@@ -8,13 +8,13 @@ Welcome to the technical deep-dive of **DocMind AI**. This document explains exa
 
 The system is composed of **5 main components** working in harmony.
 
-![System Architecture](images/docmind_system_architecture_light.png)
+![System Architecture](images/docmind_system_architecture_hybrid.png)
 
 ### **1. Frontend (Next.js)**
 - **Port:** `3000`
 - **Role:** User Interface.
 - **Tech:** React, Tailwind CSS, Framer Motion.
-- **Function:** Handles PDF uploads, chat interface, and visualizations (Neural Inspector). It talks ONLY to the Backend API.
+- **Function:** Handles PDF uploads, chat interface, and visualizations. Contains the **Model Toggle** (GPT-4 vs Llama 3).
 
 ### **2. Backend (FastAPI)**
 - **Port:** `8000`
@@ -22,22 +22,24 @@ The system is composed of **5 main components** working in harmony.
 - **Tech:** Python, FastAPI, LangChain.
 - **Function:** 
   - Receives PDFs and chunks them.
-  - Generates embeddings via OpenAI.
+  - Dynamically routes requests to Cloud or Local AI.
   - Stores vectors in ChromaDB.
-  - Retrieval logic for answering questions.
-  - Exposes debug endpoints for the Neural Inspector.
 
 ### **3. ChromaDB (Vector Store)**
 - **Port:** `8001`
 - **Role:** Long-term Memory.
 - **Tech:** ChromaDB (running in Docker).
-- **Function:** Stores the "semantic meaning" of your documents as numbers.
+- **Function:** Stores the "semantic meaning" of your documents.
 
-### **4. OpenAI (Intelligence Layer)**
-- **Role:** Cognitive Engine.
-- **Function:**
-  - **Embedding Model (`text-embedding-3-small`):** Converts text → Numbers.
-  - **LLM (`gpt-4o-mini`):** Generates natural language answers based on retrieved context.
+### **4. Intelligence Layer (Hybrid)**
+- **Role:** Dual-Engine Cognitive System.
+- **Option A: OpenAI (Cloud)**
+  - Model: `gpt-4o-mini`
+  - Use Case: High accuracy, complex reasoning.
+- **Option B: Ollama (Local)**
+  - Model: `llama3.2` (via Docker/Host).
+  - Use Case: Privacy-first, offline capable, zero cost.
+- **Switching:** Users can toggle between these engines instantly via the UI.
 
 ### **5. Local AI Agent (Independent Worker)**
 - **Role:** Specialist Task Executor.

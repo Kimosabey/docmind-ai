@@ -7,29 +7,44 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Context-Aware LLM Loader
-llm_provider = os.getenv("LLM_PROVIDER", "openai").lower()
+import os
+from langchain_openai import ChatOpenAI
+from langchain_community.chat_models import ChatOllama
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+from dotenv import load_dotenv
+
+load_dotenv()
+
+# Initialize Both Clients
 ollama_url = os.getenv("OLLAMA_BASE_URL", "http://host.docker.internal:11434")
 
-if llm_provider == "ollama":
-    # Local Llama 3
-    llm = ChatOllama(
-        base_url=ollama_url,
-        model="llama3.2",
-        temperature=0.0
-    )
-else:
-    # Default: OpenAI
-    llm = ChatOpenAI(
-        model="gpt-4o-mini",
-        temperature=0.0
-    )
+openai_llm = ChatOpenAI(
+    model="gpt-4o-mini",
+    temperature=0.0
+)
 
-def generate_answer(context: str, question: str) -> str:
+# We initialize Ollama client lazily or just have it ready
+# If Ollama isn't running, this object creation is fine, it only fails on invoke
+ollama_llm = ChatOllama(
+    base_url=ollama_url,
+    model="llama3.2",
+    temperature=0.0
+)
+
+def generate_answer(context: str, question: str, provider: str = "openai") -> str:
     """
-    Generates an answer using GPT-4o-mini based on the provided context.
+    Generates an answer using the selected provider (openai or ollama).
     """
     
+    # Select the model
+    if provider == "ollama":
+        print("DEBUG: Generating answer using Ollama (Llama 3.2)")
+        llm = ollama_llm
+    else:
+        print("DEBUG: Generating answer using OpenAI (GPT-4o)")
+        llm = openai_llm
+
     prompt = ChatPromptTemplate.from_messages([
         ("system", """You are DocMind AI, a helpful enterprise assistant. 
         Use ONLY the following context to answer the user's question. 

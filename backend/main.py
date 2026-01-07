@@ -27,6 +27,7 @@ app.add_middleware(
 
 class ChatRequest(BaseModel):
     question: str
+    model: str = "openai"  # Default to openai
 
 class ChatResponse(BaseModel):
     answer: str
@@ -73,7 +74,8 @@ async def chat(request: ChatRequest):
         context_text = "\n\n".join([doc.page_content for doc in relevant_docs])
         
         # 2. Generate Answer
-        answer = generate_answer(context_text, request.question)
+        # Pass the requested model provider
+        answer = generate_answer(context_text, request.question, provider=request.model)
         
         # 3. Extract Sources (metadata)
         sources = list(set([doc.metadata.get("source", "unknown") for doc in relevant_docs]))

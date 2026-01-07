@@ -1,7 +1,7 @@
 # 🧠 DocMind AI (Hybrid RAG Engine)
 
 
-![DocMind Architecture](docs/images/docmind_system_architecture_light.png)
+![DocMind Architecture](docs/images/docmind_system_architecture_hybrid.png)
 
 ## 🎯 Key Features
 
