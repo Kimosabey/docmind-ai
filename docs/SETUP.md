@@ -1,32 +1,63 @@
-# DocMind AI (Hybrid RAG)
+# DocMind AI Setup Guide
 
-## Setup Instructions
+## 🚀 Quick Setup (Docker)
 
-### 1. Environment Variables
-Create a file `backend/.env` with your keys:
+The easiest way to run DocMind AI is using Docker Compose.
+
+### 1. Prerequisites
+- Docker Desktop installed
+- OpenAI API Key
+
+### 2. Configuration
+Create a `.env` file in the **root directory**:
+
+```ini
+# Required
+OPENAI_API_KEY=sk-your-key-here
+
+# Optional: For Local Llama 3 (Ollama)
+LLM_PROVIDER=openai  # or ollama
+OLLAMA_BASE_URL=http://host.docker.internal:11434
+OLLAMA_MODEL=llama3
+OLLAMA_EMBED_MODEL=mxbai-embed-large
 ```
-OPENAI_API_KEY=sk-...
-CHROMA_URL=http://localhost:8001
-```
 
-### 2. Backend (Python)
-Ensure Python 3.10+ is installed.
+### 3. Start Services
+Run this command in the root folder:
+
 ```bash
-cd backend
-python -m venv venv
-.\venv\Scripts\activate
-pip install -r requirements.txt
-uvicorn main:app --reload
+docker-compose up -d --build
 ```
+This starts:
+- **Backend API**: `http://localhost:8000`
+- **ChromaDB**: `http://localhost:8001`
 
-### 3. Frontend (Next.js)
+### 4. Start Frontend
+The frontend runs locally for easier development:
+
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
+Access the UI at: **`http://localhost:3000`**
 
-### 4. Vector Database (Docker)
-```bash
-docker-compose up -d
-```
+---
+
+## 🛠️ Manual Setup (Dev Mode)
+
+If you want to run the backend manually (without Docker):
+
+1. **Start ChromaDB only**:
+   ```bash
+   docker-compose up -d chromadb
+   ```
+
+2. **Run Backend**:
+   ```bash
+   cd backend
+   python -m venv venv
+   .\venv\Scripts\activate   # or source venv/bin/activate
+   pip install -r requirements.txt
+   uvicorn main:app --reload --port 8000
+   ```

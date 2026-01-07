@@ -117,8 +117,8 @@ async def get_system_status():
     
     return {
         # AI Models
-        "embedding_model": "all-mpnet-base-v2",
-        "embedding_dimensions": 768,
+        "embedding_model": "mxbai-embed-large" if llm_provider == "ollama" else "text-embedding-3-small",
+        "embedding_dimensions": 1024 if llm_provider == "ollama" else 1536,
         "llm_provider": llm_provider,
         "llm_model": "llama3" if llm_provider == "ollama" else "gpt-4o-mini",
         

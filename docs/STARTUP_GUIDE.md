@@ -77,7 +77,7 @@ We use Docker to orchestrate the Vector Database (ChromaDB) and the Python Backe
 ## 🛑 Failure Scenarios & Troubleshooting
 
 **Issue**: `Connection Refused` on Frontend?
-- **Fix**: Ensure Backend is running. Check `docker logs docmind-backend`.
+- **Fix**: Ensure Backend is running. Check `docker logs docmind-api`.
 
 **Issue**: `ChromaDB` connection error?
 - **Fix**: Ensure the persistent volume folder isn't corrupted. Try `docker-compose down -v` to reset data.

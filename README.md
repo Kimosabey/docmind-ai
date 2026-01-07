@@ -2,7 +2,7 @@
 
 > **Privacy-First Document Intelligence** | Hybrid Cloud-Local Architecture | Production-Grade RAG
 
-![DocMind AI Interface](docs/images/docmind_hero.png)
+![DocMind AI Interface](docs/images/docmind_ui_mockup.png)
 
 ## 🎯 What is DocMind AI?
 
@@ -209,13 +209,13 @@ If you have a powerful GPU server running Ollama:
 ## 🎨 Screenshots
 
 ### Main Chat Interface
-![Chat Interface](docs/images/docmind_chat.png)
+![Chat Interface](docs/images/docmind_ui_mockup.png)
 
 ### Neural Inspector
-![Neural Inspector](docs/images/docmind_inspector.png)
+![Neural Inspector](docs/images/docmind_neural_inspector_mockup.png)
 
-### Model Toggle
-![Model Selection](docs/images/docmind_models.png)
+### Model Architecture
+![Model Architecture](docs/images/multi_model_architecture.png)
 
 ---
 
