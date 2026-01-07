@@ -15,7 +15,7 @@ if llm_provider == "ollama":
     # Local Llama 3
     llm = ChatOllama(
         base_url=ollama_url,
-        model="llama3",
+        model="llama3.2",
         temperature=0.0
     )
 else:

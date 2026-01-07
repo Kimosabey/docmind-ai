@@ -3,12 +3,25 @@ from typing import List
 from langchain_community.vectorstores import Chroma
 from langchain_core.documents import Document
 from langchain_openai import OpenAIEmbeddings
+from langchain_ollama import OllamaEmbeddings
+from dotenv import load_dotenv
 
-# Initialize Embeddings (OpenAI)
-# Using 'text-embedding-3-small' for cost efficiency and speed
-embedding_function = OpenAIEmbeddings(
-    model="text-embedding-3-small"
-)
+load_dotenv()
+
+llm_provider = os.getenv("LLM_PROVIDER", "openai").lower()
+ollama_url = os.getenv("OLLAMA_BASE_URL", "http://host.docker.internal:11434")
+
+if llm_provider == "ollama":
+    print("DEBUG: Using Ollama Embeddings (nomic-embed-text)")
+    embedding_function = OllamaEmbeddings(
+        model="nomic-embed-text",
+        base_url=ollama_url
+    )
+else:
+    print("DEBUG: Using OpenAI Embeddings (text-embedding-3-small)")
+    embedding_function = OpenAIEmbeddings(
+        model="text-embedding-3-small"
+    )
 
 def get_vector_store():
     """Returns the ChromaDB Client connected to the local Docker instance."""

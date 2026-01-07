@@ -9,3 +9,4 @@ langchain-community
 chromadb
 pypdf
 psutil
+langchain-ollama
