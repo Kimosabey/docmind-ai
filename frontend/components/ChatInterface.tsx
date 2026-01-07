@@ -18,14 +18,7 @@ interface Message {
 }
 
 export default function ChatInterface() {
-    const [messages, setMessages] = useState<Message[]>([
-        {
-            id: "1",
-            role: "bot",
-            text: "Hello! I'm DocMind AI. Upload a PDF contract or manual, and I'll help you navigate it instantly.",
-            timestamp: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
-        },
-    ]);
+    const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState("");
     const [isUploading, setIsUploading] = useState(false);
     const [isTyping, setIsTyping] = useState(false);
@@ -37,6 +30,16 @@ export default function ChatInterface() {
     const [collectionStats, setCollectionStats] = useState<any>(null);
     const [selectedModel, setSelectedModel] = useState<'openai' | 'ollama'>('openai');
     const messagesEndRef = useRef<HTMLDivElement>(null);
+
+    // Initial welcome message (client-side only to avoid hydration mismatch)
+    useEffect(() => {
+        setMessages([{
+            id: "1",
+            role: "bot",
+            text: "Hello! I'm DocMind AI. Upload a PDF contract or manual, and I'll help you navigate it instantly.",
+            timestamp: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+        }]);
+    }, []);
 
     // Fetch system status and collection stats
     useEffect(() => {
@@ -212,7 +215,7 @@ export default function ChatInterface() {
                                         : (isDarkMode ? 'text-slate-500 hover:text-slate-300' : 'text-slate-400 hover:text-slate-600')
                                         }`}
                                 >
-                                    GPT-4o
+                                    GPT-4o mini
                                 </button>
                                 <button
                                     onClick={() => setSelectedModel('ollama')}

@@ -32,10 +32,10 @@ def generate_answer(context: str, question: str, provider: str = "openai") -> st
     
     # Select the model
     if provider == "ollama":
-        print("DEBUG: Generating answer using Ollama (Llama 3.2)")
+        print(f"DEBUG: Generating answer using Ollama ({ollama_model})")
         llm = ollama_llm
     else:
-        print("DEBUG: Generating answer using OpenAI (GPT-4o)")
+        print("DEBUG: Generating answer using OpenAI (GPT-4o mini)")
         llm = openai_llm
 
     prompt = ChatPromptTemplate.from_messages([
