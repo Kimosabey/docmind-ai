@@ -51,7 +51,7 @@ async def upload_document(file: UploadFile = File(...)):
         temp_path = save_upload_file_temp(file)
         
         # 2. Process & Chunk
-        chunks = process_pdf(temp_path)
+        chunks = process_pdf(temp_path, original_filename=file.filename)
         
         # 3. Embed & Store
         add_documents_to_store(chunks)
@@ -77,8 +77,16 @@ async def chat(request: ChatRequest):
         # Pass the requested model provider
         answer = generate_answer(context_text, request.question, provider=request.model)
         
-        # 3. Extract Sources (metadata)
-        sources = list(set([doc.metadata.get("source", "unknown") for doc in relevant_docs]))
+        # 3. Extract Sources (metadata) with Page Numbers
+        # Format: "Contract.pdf (Page 1)"
+        sources = []
+        for doc in relevant_docs:
+            source_name = doc.metadata.get("source", "Unknown Document")
+            page_num = doc.metadata.get("page", 0) + 1  # LangChain is 0-indexed
+            formatted_source = f"{source_name} (Page {page_num})"
+            sources.append(formatted_source)
+            
+        sources = list(set(sources))  # Dedup
         
         return ChatResponse(answer=answer, sources=sources)
     except Exception as e:

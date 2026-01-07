@@ -30,11 +30,11 @@ def save_upload_file_temp(upload_file: UploadFile) -> str:
         print(f"DEBUG: Error saving temp file: {e}")
         raise e
 
-def process_pdf(file_path: str) -> List[Document]:
+def process_pdf(file_path: str, original_filename: str = None) -> List[Document]:
     """
     Loads a PDF and splits it into chunks.
     """
-    print(f"DEBUG: Processing PDF at: {file_path}")
+    print(f"DEBUG: Processing PDF at: {file_path} (Original: {original_filename})")
     
     if not os.path.exists(file_path):
         print("DEBUG: File does not exist!")
@@ -58,9 +58,11 @@ def process_pdf(file_path: str) -> List[Document]:
         split_docs = text_splitter.split_documents(docs)
         print(f"DEBUG: Split into {len(split_docs)} chunks")
         
-        # Add source metadata to each chunk if missing
+        # Add source metadata to each chunk
         for doc in split_docs:
-            if "source" not in doc.metadata:
+            if original_filename:
+                doc.metadata["source"] = original_filename
+            elif "source" not in doc.metadata:
                 doc.metadata["source"] = os.path.basename(file_path)
         
         return split_docs
