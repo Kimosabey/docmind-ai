@@ -1,11 +1,11 @@
 # 🧠 Local AI Agent (SQL Reasoning)
-> *Part of the "Agentic Layer" (Phase 3).*
 
-![Agent Workflow](docs/images/agent_workflow_diagram.png)
+
+![Agent Workflow](../docs/images/local_agent_workflow_light.png)
 
 ## 🎯 Technical Overview
 
-![ReAct Pattern](../docs/images/agent_react_pattern.png)
+![ReAct Pattern](../docs/images/react_pattern_loop_light.png)
 
 This module implements the **ReAct (Reason + Act) Pattern** for autonomous database querying. The agent architecture enables:
 

@@ -1,11 +1,11 @@
 # 🧠 DocMind AI (Hybrid RAG Engine)
-> *Formerly distinct projects "SpecLens" and "SilenceShield", now unified into the DocMind Enterprise Intelligence Platform.*
 
-![DocMind Architecture](docs/images/docmind_architecture_diagram.png)
+
+![DocMind Architecture](docs/images/docmind_system_architecture_light.png)
 
 ## 🎯 Key Features
 
-![Technical Architecture](docs/images/learning_outcomes.png)
+
 
 DocMind AI implements a **production-grade Hybrid RAG architecture** with the following capabilities:
 
@@ -21,7 +21,7 @@ DocMind AI implements a **production-grade Hybrid RAG architecture** with the fo
 ## 🌌 The Ecosystem Infographic
 > *A high-level view of how all components fit together.*
 
-![Ecosystem Overview](docs/images/docmind_ecosystem_infographic.png)
+![Ecosystem Overview](docs/images/rag_process_flow_light.png)
 
 ## 🚀 Project Overview
 **DocMind AI** is a privacy-first **Retrieval Augmented Generation (RAG)** system designed for enterprise environments. It solves the critical problem of "Hallucinations" and "Data Privacy" by keeping your documents stored locally while using advanced cloud AI only for reasoning.
@@ -109,4 +109,4 @@ We have included a built-in debugging tool to visualize the "Brain" of the AI.
 - [x] **Phase 3**: Multi-Model Support (Ollama/Llama-3 Integration)
 
 ---
-*Built with ❤️ for the Advanced Agentic Coding Project.*
+

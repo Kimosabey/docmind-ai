@@ -52,7 +52,7 @@ def init_db():
 
     conn.commit()
     conn.close()
-    print("✅ Database 'sales.db' created and seeded successfully.")
+    print("[OK] Database 'sales.db' created and seeded successfully.")
 
 if __name__ == "__main__":
     init_db()

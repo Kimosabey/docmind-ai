@@ -2,7 +2,7 @@
 
 > *How the "Brain" thinks before it acts.*
 
-![ReAct Cycle](images/react_loop_diagram.png)
+![ReAct Cycle](../../docs/images/react_pattern_loop_light.png)
 
 ## 1. The Core Loop
 The agent does not just "guess" the answer. It enters a **While Loop** of reasoning until it is satisfied.
