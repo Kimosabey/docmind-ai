@@ -558,16 +558,7 @@ export default function ChatInterface() {
                                             </div>
                                         </div>
 
-                                        <div className="grid grid-cols-2 gap-3">
-                                            <div className={`rounded-xl p-3 border ${isDarkMode ? 'bg-[#131722] border-white/10' : 'bg-slate-50 border-slate-200'}`}>
-                                                <div className="flex justify-between items-start mb-2">
-                                                    <Zap className={`w-5 h-5 ${isDarkMode ? 'text-emerald-400' : 'text-emerald-600'}`} />
-                                                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></div>
-                                                </div>
-                                                <div className={`text-[10px] uppercase tracking-wide font-bold mb-0.5 ${isDarkMode ? 'text-slate-500' : 'text-slate-600'}`}>Latency</div>
-                                                <div className={`text-lg font-bold font-mono ${isDarkMode ? 'text-slate-200' : 'text-slate-900'}`}>124<span className={`text-xs ml-0.5 ${isDarkMode ? 'text-slate-500' : 'text-slate-600'}`}>ms</span></div>
-                                            </div>
-
+                                        <div className="grid grid-cols-1 gap-3">
                                             <div className={`rounded-xl p-3 border ${isDarkMode ? 'bg-[#131722] border-white/10' : 'bg-slate-50 border-slate-200'}`}>
                                                 <div className="flex justify-between items-start mb-2">
                                                     <Activity className={`w-5 h-5 ${isDarkMode ? 'text-purple-400' : 'text-purple-600'}`} />
