@@ -93,6 +93,29 @@ We utilize a **Hybrid RAG** approach:
 
 ---
 
+## 🌐 Connecting to External Ollama Server
+If you have a powerful server running Ollama (e.g., in your office), you can connect DocMind to it instead of running Llama 3 on your laptop.
+
+1.  **Ensure Ollama is running** on the server:
+    ```bash
+    ollama serve
+    ```
+    *Ensure port 11434 is accessible.*
+
+2.  **Update `.env` file** on your laptop:
+    ```ini
+    OLLAMA_BASE_URL=http://<YOUR_SERVER_IP>:11434
+    ```
+
+3.  **Restart Backend**:
+    ```bash
+    docker-compose restart backend
+    ```
+
+Now, when you toggle **"Llama 3"** in the UI, it will send the reasoning task to your office server!
+
+---
+
 ## 🔍 Neural Inspector (New!)
 We have included a built-in debugging tool to visualize the "Brain" of the AI. 
 - Click the **Database Icon** in the top-right header.
