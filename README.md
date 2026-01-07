@@ -115,5 +115,5 @@ We have included a built-in debugging tool to visualize the "Brain" of the AI.
 
 ## 👨‍💻 Author
 
-**Harsha**  
-*Senior Engineer*
+**Harshan Aiyappa**  
+*Software Engineer & Architect*

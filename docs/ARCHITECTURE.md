@@ -118,5 +118,5 @@ You have 3 ways to interact with the brain:
 
 ## 👨‍💻 Architecture Design By
 
-**Harsha**  
-*Senior Engineer*
+**Harshan Aiyappa**  
+*Software Engineer & Architect*
