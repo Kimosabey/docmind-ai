@@ -43,10 +43,7 @@ The system is composed of **5 main components** working in harmony.
   - Use Case: Privacy-first, offline capable.
 - **Switching:** Users can toggle between these engines instantly via the UI.
 
-### **5. Local AI Agent (Independent Worker)**
-- **Role:** Specialist Task Executor.
-- **Tech:** Python Script.
-- **Function:** A standalone demo showcasing "Agentic AI". It can inspect SQL databases and reason about data autonomously.
+
 
 ---
 
@@ -96,10 +93,7 @@ docmind-ai/
 ├── chromadb-admin/         # The Admin Dashboard UI
 │   └── src/                # Admin Panel Code
 │
-├── local-ai-agent/         # Standalone SQL Agent Demo
-│   ├── src/agent.py        # The Thinking Agent
-│   └── data/sales.db       # Demo SQLite Database
-│
+
 └── docker-compose.yml      # Orchestration Config
 ```
 
