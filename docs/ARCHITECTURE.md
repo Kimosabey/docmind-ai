@@ -1,86 +1,115 @@
-# 🏗️ Architectural Decisions Record (ADR)
+# 🏗️ DocMind AI - System Architecture
 
-## ADR-001: Hybrid RAG Architecture
-
-### 1. Context
-We needed a system that allows users to query private documents (PDFs) without exposing the entire dataset to public model training, while retaining the high-quality reasoning capabilities of top-tier LLMs.
-
-### 2. Decision
-We chose a **Hybrid RAG** (Retrieval-Augmented Generation) pattern.
-- **Local State**: Vector Store (ChromaDB) runs in a local Docker container.
-- **Remote Intelligence**: Inference is offloaded to OpenAI's `gpt-4o-mini` API.
-
-### 3. Alternatives Considered
-
-#### Option A: Fully Local (Ollama / Llama-3)
-- **Pros**: 100% Privacy, no API costs.
-- **Cons**: High latency (10s+ on CPU), requires heavy hardware (16GB+ RAM), complex setup for average users.
-- **Verdict**: Rejected for Phase 1 due to poor UX (latency).
-
-#### Option B: Fully Cloud (Pinecone + GPT-4)
-- **Pros**: Zero infrastructure management, extremely fast.
-- **Cons**: All private data lives on 3rd party servers (Pinecone). High cost for storage and high-tier GPT-4 calls.
-- **Verdict**: Rejected due to Data Sovereignty requirements.
-
-### 4. The Chosen "Hybrid" Path
-By using **ChromaDB locally**, we ensure:
-1.  **Data Control**: Vectors live on the user's disk / VPC.
-2.  **Performance**: Local network retrieval is faster than cloud hops.
-3.  **Cost Efficiency**: We only pay for the *reasoning* (tokens input/output), not for the storage or retrieval operations.
-4.  **Hardware Agnostic**: Runs on a standard laptop Docker container; no GPU required.
-
-![Ingestion Pipeline](docs/images/docmind_ingestion_pipeline.png)
+Welcome to the technical deep-dive of **DocMind AI**. This document explains exactly how the system works, from the user interface down to the vector mathematics.
 
 ---
 
-## 🔄 Complete RAG Pipeline
+## 🌌 High-Level Architecture
 
-![RAG Pipeline Flow](images/rag_pipeline_flow.png)
+The system is composed of **5 main components** working in harmony.
 
-The diagram above shows the complete end-to-end flow from document upload to answer generation. Each step is optimized for performance and privacy:
+![System Architecture](images/docmind_system_architecture_light.png)
 
-1. **Upload**: User submits PDF through frontend
-2. **Extract**: Backend parses PDF text
-3. **Chunk**: Text split into semantic segments
-4. **Embed**: Chunks converted to 1536-dimension vectors
-5. **Store**: Vectors saved locally in ChromaDB
-6. **Query**: User asks a question
-7. **Search**: Find top-3 most similar chunks
-8. **Generate**: LLM creates answer from context
+### **1. Frontend (Next.js)**
+- **Port:** `3000`
+- **Role:** User Interface.
+- **Tech:** React, Tailwind CSS, Framer Motion.
+- **Function:** Handles PDF uploads, chat interface, and visualizations (Neural Inspector). It talks ONLY to the Backend API.
 
----
+### **2. Backend (FastAPI)**
+- **Port:** `8000`
+- **Role:** The Brain / Orchestrator.
+- **Tech:** Python, FastAPI, LangChain.
+- **Function:** 
+  - Receives PDFs and chunks them.
+  - Generates embeddings via OpenAI.
+  - Stores vectors in ChromaDB.
+  - Retrieval logic for answering questions.
+  - Exposes debug endpoints for the Neural Inspector.
 
-## System Components
+### **3. ChromaDB (Vector Store)**
+- **Port:** `8001`
+- **Role:** Long-term Memory.
+- **Tech:** ChromaDB (running in Docker).
+- **Function:** Stores the "semantic meaning" of your documents as numbers.
 
-### A. The Ingestion Engine (`backend/services/ingestion.py`)
-- **Library**: `pypdf` + `LangChain`
-- **Strategy**: Recursive Character Validation.
-- **Chunk Size**: 1000 characters.
-- **Overlap**: 200 characters.
-- **Reasoning**: overlap ensures that context (like a sentence flowing from line 10 to 11) isn't cut off mid-thought, preserving semantic meaning for the embedding model.
+### **4. OpenAI (Intelligence Layer)**
+- **Role:** Cognitive Engine.
+- **Function:**
+  - **Embedding Model (`text-embedding-3-small`):** Converts text → Numbers.
+  - **LLM (`gpt-4o-mini`):** Generates natural language answers based on retrieved context.
 
-### B. The Vector Store (`backend/services/vector_store.py`)
-- **Engine**: ChromaDB
-- **Model**: `text-embedding-3-small` (OpenAI).
-- **Dimensions**: 1536.
-- **Persistence**: Mounted Docker volume (`./chroma_data`).
-
-### C. The Cortex (Multi-Model Support)
-> *New in Phase 3: Switch between Cloud and Local Intelligence.*
-
-![Multi-Model Architecture](docs/images/multi_model_architecture.png)
-
-The system now supports a **Strategy Pattern** for the LLM Provider, controlled via the `LLM_PROVIDER` environment variable.
-
-| Provider             | Model         | Use Case                      | trade-off                          |
-| :------------------- | :------------ | :---------------------------- | :--------------------------------- |
-| **OpenAI** (Default) | `gpt-4o-mini` | Production, Complex Reasoning | Cost ($), External Data Flow       |
-| **Ollama**           | `llama3`      | High-Privacy, Offline, Dev    | Latency (CPU dependent), Zero Cost |
+### **5. Local AI Agent (Independent Worker)**
+- **Role:** Specialist Task Executor.
+- **Tech:** Python Script.
+- **Function:** A standalone demo showcasing "Agentic AI". It can inspect SQL databases and reason about data autonomously.
 
 ---
 
-## 🔮 Future Scalability
-To scale this to **Production (10k Users)**, we would:
-1.  Replace Local Docker Chroma with **Chroma Client/Server Mode** clusters.
-2.  Implement **Celery/Redis** for async document processing (Queue).
-3.  Add **Redis Caching** for frequently asked questions to bypass the LLM entirely.
+## 🧠 The "Brain" Logic: How RAG Works
+
+RAG (**R**etrieval **A**ugmented **G**eneration) is the core algorithm powering DocMind.
+
+![RAG Process Flow](images/rag_process_flow_light.png)
+
+### **Phase 1: Ingestion (Learning)**
+1. **Upload:** You upload a PDF (e.g., "Holiday List.pdf").
+2. **Chunking:** The backend splits it into small pieces (e.g., 1000 characters each).
+3. **Embedding:** It sends each piece to OpenAI. OpenAI replies with a list of 1536 numbers (a vector) representing the *meaning* of that text.
+4. **Storage:** We save the text + the numbers in **ChromaDB**.
+
+### **Phase 2: Retrieval (Thinking)**
+1. **Question:** You ask "What are the holidays?"
+2. **Vectorization:** We convert your question into 1536 numbers using the same OpenAI model.
+3. **Similarity Search:** ChromaDB compares your question's numbers against all stored document numbers to find the closest matches (Cosine Similarity).
+4. **Context Assembly:** We grab the top 3 matching text chunks.
+
+### **Phase 3: Generation (Answering)**
+1. **Prompt Construction:** We send a prompt to GPT-4:
+   > "Here is some context from a document: [Context Chunks]
+   > User Question: [Your Question]
+   > Answer the question using ONLY the context provided."
+2. **Response:** GPT-4 writes the answer.
+3. **Display:** The frontend shows you the answer.
+
+---
+
+## 🛠️ Folder Structure Map
+
+```bash
+docmind-ai/
+├── frontend/               # Next.js UI Application
+│   ├── app/                # Pages & Routes
+│   └── components/         # React Components (Chat, Inspector)
+│
+├── backend/                # FastAPI Application
+│   ├── main.py             # API Entry point
+│   └── services/           # Business Logic
+│       ├── ingestion.py    # PDF Processing logic
+│       └── vector_store.py # ChromaDB interaction logic
+│
+├── chromadb-admin/         # The Admin Dashboard UI
+│   └── src/                # Admin Panel Code
+│
+├── local-ai-agent/         # Standalone SQL Agent Demo
+│   ├── src/agent.py        # The Thinking Agent
+│   └── data/sales.db       # Demo SQLite Database
+│
+└── docker-compose.yml      # Orchestration Config
+```
+
+---
+
+## 🧪 Testing The System
+
+You have 3 ways to interact with the brain:
+
+| Interface    | URL                          | Use Case                         |
+| ------------ | ---------------------------- | -------------------------------- |
+| **Main App** | `http://localhost:3000`      | Chatting with documents          |
+| **Admin UI** | `http://localhost:3001`      | Inspecting the database visually |
+| **API Docs** | `http://localhost:8000/docs` | Debugging backend endpoints      |
+
+---
+
+*Documentation generated by Antigravity Agents.*
