@@ -84,7 +84,7 @@ async def chat(request: ChatRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-from services.vector_store import get_collection_stats, list_documents
+from services.vector_store import get_collection_stats, list_documents, reset_vector_store
 
 @app.get("/api/debug/stats")
 async def get_stats():
@@ -93,6 +93,14 @@ async def get_stats():
 @app.get("/api/debug/documents")
 async def get_docs(limit: int = 20):
     return list_documents(limit=limit)
+
+@app.post("/api/reset")
+async def reset_database():
+    """Clears all documents from the vector store."""
+    success = reset_vector_store()
+    if not success:
+        raise HTTPException(status_code=500, detail="Failed to reset database")
+    return {"message": "Database cleared successfully", "status": "empty"}
 
 @app.get("/api/system/status")
 async def get_system_status():

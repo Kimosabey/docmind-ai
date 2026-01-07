@@ -7,7 +7,7 @@ import {
     Cpu, Settings, Bell, Menu, MessageCircle, ThumbsUp, ThumbsDown,
     Copy, Zap, Activity, Terminal, Moon, Sun
 } from "lucide-react";
-import { uploadDocument, chatWithBot, getSystemStatus, getCollectionStats } from "@/services/api";
+import { uploadDocument, chatWithBot, getSystemStatus, getCollectionStats, resetDatabase } from "@/services/api";
 
 interface Message {
     id: string;
@@ -57,6 +57,28 @@ export default function ChatInterface() {
     useEffect(() => {
         scrollToBottom();
     }, [messages, isTyping]);
+
+    const handleReset = async () => {
+        if (!confirm("Are you sure you want to clear the knowledge base? This action cannot be undone.")) return;
+
+        try {
+            await resetDatabase();
+            setMessages([
+                {
+                    id: Date.now().toString(),
+                    role: "bot",
+                    text: "Knowledge base cleared. Ready for new documents.",
+                    timestamp: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+                }
+            ]);
+            setFileName("");
+            setUploadStatus("idle");
+            getCollectionStats().then(res => setCollectionStats(res.data)).catch(console.error);
+        } catch (error) {
+            console.error("Reset failed", error);
+            alert("Failed to reset knowledge base");
+        }
+    };
 
     const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target.files || e.target.files.length === 0) return;
@@ -243,14 +265,23 @@ export default function ChatInterface() {
                                     </div>
                                 </motion.div>
                             ) : uploadStatus === "success" ? (
-                                <motion.div
-                                    initial={{ scale: 0.8 }}
-                                    animate={{ scale: 1 }}
-                                    className="flex items-center gap-2 h-10 px-5 bg-emerald-500/20 backdrop-blur-sm rounded-xl border border-emerald-400/50"
-                                >
-                                    <CheckCircle className="w-4 h-4 text-emerald-400" />
-                                    <span className="text-sm text-emerald-300 font-medium">Indexed!</span>
-                                </motion.div>
+                                <div className="flex items-center gap-2">
+                                    <motion.div
+                                        initial={{ scale: 0.8 }}
+                                        animate={{ scale: 1 }}
+                                        className="flex items-center gap-2 h-10 px-4 bg-emerald-500/20 backdrop-blur-sm rounded-xl border border-emerald-400/50"
+                                    >
+                                        <CheckCircle className="w-4 h-4 text-emerald-400" />
+                                        <span className="text-sm text-emerald-300 font-medium">Indexed</span>
+                                    </motion.div>
+                                    <button
+                                        onClick={handleReset}
+                                        className="h-10 w-10 flex items-center justify-center rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 hover:border-red-500/50 text-red-500 transition-all"
+                                        title="Clear & Reset"
+                                    >
+                                        <Zap className="w-4 h-4" />
+                                    </button>
+                                </div>
                             ) : (
                                 <>
                                     <input

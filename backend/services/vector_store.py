@@ -127,3 +127,25 @@ def list_documents(limit: int = 10):
         return formatted
     except Exception:
         return []
+
+def reset_vector_store():
+    """Clears all data from the ChromaDB collection."""
+    print("DEBUG: Resetting vector store...")
+    client = get_chroma_client()
+    try:
+        # Try to delete the specific collection
+        try:
+            client.delete_collection("docmind_collection")
+            print("DEBUG: Collection 'docmind_collection' deleted.")
+        except Exception:
+            print("DEBUG: Collection did not exist, nothing to delete.")
+        
+        # We don't necessarily need to re-create it immediately, 
+        # the next add_documents call or get_collection will create it if needed.
+        # But to be safe for stats calls, let's create an empty one.
+        client.get_or_create_collection("docmind_collection")
+        print("DEBUG: Empty collection 'docmind_collection' ready.")
+        return True
+    except Exception as e:
+        print(f"ERROR: Reset failed: {e}")
+        return False
