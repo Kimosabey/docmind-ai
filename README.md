@@ -366,13 +366,11 @@ This project is licensed under the MIT License - see [LICENSE](LICENSE) file for
 
 ---
 
-## 👨‍💻 Author
+## 👤 Author
 
-**Harshan Aiyappa**  
-*Software Engineer & AI Architect*
+**Harshan Aiyappa**
 
 - GitHub: [@Kimosabey](https://github.com/Kimosabey)
-- LinkedIn: [Harshan Aiyappa](https://linkedin.com/in/harshan-aiyappa)
 
 ---
 
