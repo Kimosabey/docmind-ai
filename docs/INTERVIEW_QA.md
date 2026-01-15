@@ -7,7 +7,7 @@
 **The "Senior" Answer:**
 "I designed it to balance **Privacy**, **Cost**, and **User Experience**. 
 
-![Architectural Trade-Offs](images/arch_tradeoffs_diagram.png)
+![Architectural Trade-Offs](assets/arch_tradeoffs_diagram.png)
 
 - **Privacy:** Enterprise documents shouldn't just be dumped into a public cloud API blindly. By running **ChromaDB locally** (via Docker), I ensure the raw knowledge base stays within our VPC/Infrastructure.
 - **UX:** Fully local models (like Llama-3 on CPU) result in 15-30s latency, which is unacceptable for a chat interface.

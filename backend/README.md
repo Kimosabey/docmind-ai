@@ -135,7 +135,7 @@ Get vector database statistics.
 
 ## 📊 How RAG Works
 
-![RAG Pipeline](../docs/images/rag_pipeline_flow.png)
+![RAG Pipeline](../docs/assets/rag_pipeline_flow.png)
 
 1. **Ingest**: User uploads PDF
 2. **Chunk**: Split into 1000-char segments with 200-char overlap

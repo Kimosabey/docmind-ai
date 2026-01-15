@@ -8,7 +8,7 @@ Welcome to the technical deep-dive of **DocMind AI**. This document explains exa
 
 The system is composed of **5 main components** working in harmony.
 
-![System Architecture](images/docmind_system_architecture_hybrid.png)
+![System Architecture](assets/docmind_system_architecture_hybrid.png)
 
 ### **1. Frontend (Next.js)**
 - **Port:** `3000`
@@ -51,7 +51,7 @@ The system is composed of **5 main components** working in harmony.
 
 RAG (**R**etrieval **A**ugmented **G**eneration) is the core algorithm powering DocMind.
 
-![RAG Process Flow](images/rag_process_flow_light.png)
+![RAG Process Flow](assets/rag_process_flow_light.png)
 
 ### **Phase 1: Ingestion (Learning)**
 1. **Upload:** You upload a PDF (e.g., "Holiday List.pdf").

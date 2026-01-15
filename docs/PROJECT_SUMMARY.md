@@ -4,7 +4,7 @@
 
 DocMind AI is a state-of-the-art **Hybrid Retrieval Augmented Generation (RAG)** system designed to bridge the gap between Data Privacy and Advanced AI Reasoning. By decoupling storage from intelligence, we allow enterprises to chat with their sensitive PDF documents without ever uploading the full dataset to a third-party cloud.
 
-![DocMind Dashboard Mockup](docs/images/docmind_ui_mockup.png)
+![DocMind Dashboard Mockup](docs/assets/docmind_ui_mockup.png)
 
 ## 🌟 Key Features
 

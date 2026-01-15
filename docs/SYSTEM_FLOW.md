@@ -5,12 +5,12 @@
 ## 1. The Interaction Sequence
 This diagram details the exact "Handshake" between the User, our Frontend, the Local Vector Brain, and the Cloud Intelligence.
 
-![User Flow Sequence](images/docmind_user_flow_sequence.png)
+![User Flow Sequence](assets/docmind_user_flow_sequence.png)
 
 ## 2. The Data Pipeline (Ingestion)
 How a raw PDF becomes "Liquid Intelligence".
 
-![Ingestion Pipeline](images/docmind_ingestion_pipeline.png)
+![Ingestion Pipeline](assets/docmind_ingestion_pipeline.png)
 
 ---
 

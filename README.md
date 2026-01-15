@@ -2,7 +2,7 @@
 
 > **Privacy-First Document Intelligence** | Hybrid Cloud-Local Architecture | Production-Grade RAG
 
-![DocMind AI Interface](docs/images/docmind_ui_mockup.png)
+![DocMind AI Interface](docs/assets/docmind_ui_mockup.png)
 
 <div align="center">
 
@@ -56,11 +56,11 @@ npm run dev
 ## 📸 Screenshots
 
 ### Neural Inspector (Monitoring)
-![Neural Inspector](docs/images/docmind_neural_inspector_mockup.png)
+![Neural Inspector](docs/assets/docmind_neural_inspector_mockup.png)
 *Real-time vector storage and system metrics visualization*
 
 ### Multi-Model Architecture
-![Model Architecture](docs/images/multi_model_architecture.png)
+![Model Architecture](docs/assets/multi_model_architecture.png)
 *Hybrid cloud-local inference pipeline*
 
 ---
@@ -82,11 +82,11 @@ npm run dev
 
 ## 🏗️ Architecture
 
-![System Architecture](docs/images/docmind_system_architecture_hybrid.png)
+![System Architecture](docs/assets/docmind_system_architecture_hybrid.png)
 
 ### RAG Pipeline Flow
 
-![RAG Pipeline](docs/images/rag_pipeline_flow.png)
+![RAG Pipeline](docs/assets/rag_pipeline_flow.png)
 
 1. **Document Ingestion**: PDF → Text Extraction → Chunking (1000 chars, 200 overlap).
 2. **Embedding Generation**: Text Chunks → OpenAI Embeddings (`text-embedding-3-small`) → 768D Vectors.
