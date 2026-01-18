@@ -1,112 +1,81 @@
-# 🏗️ DocMind AI - System Architecture
+# 🏗️ System Architecture
 
-Welcome to the technical deep-dive of **DocMind AI**. This document explains exactly how the system works, from the user interface down to the vector mathematics.
+## 1. High-Level Design (HLD)
 
----
+DocMind AI implements a **Hybrid RAG Architecture** (Retrieval-Augmented Generation). It allows seamless switching between Cloud (OpenAI) and Local (Ollama/Llama 3) inference engines, all backed by a persistent Vector Store (ChromaDB).
 
-## 🌌 High-Level Architecture
-
-The system is composed of **5 main components** working in harmony.
-
-![System Architecture](assets/docmind_system_architecture_hybrid.png)
-
-### **1. Frontend (Next.js)**
-- **Port:** `3000`
-- **Role:** User Interface.
-- **Tech:** React, Tailwind CSS, Framer Motion.
-- **Function:** Handles PDF uploads, chat interface, and visualizations. Contains the **Neural Inspector** and **Model Toggle**.
-
-### **2. Backend (FastAPI)**
-- **Port:** `8000`
-- **Role:** The Brain / Orchestrator.
-- **Tech:** Python, FastAPI, LangChain.
-- **Function:** 
-  - Receives PDFs and chunks them.
-  - Dynamically routes requests to Cloud or Local AI.
-  - Integration with ChromaDB.
-
-### **3. ChromaDB (Vector Store)**
-- **Port:** `8001`
-- **Role:** Long-term Memory.
-- **Tech:** ChromaDB (running in Docker).
-- **Function:** Stores the "semantic meaning" of your documents.
-
-### **4. Intelligence Layer (Hybrid)**
-- **Role:** Dual-Engine Cognitive System.
-- **Option A: OpenAI (Cloud)**
-  - Model: `gpt-4o-mini`
-  - Embedding: `text-embedding-3-small` (1536 dims)
-  - Use Case: High accuracy, low cost.
-- **Option B: Ollama (Local/Server)**
-  - Model: `llama3`
-  - Embedding: `mxbai-embed-large` (1024 dims)
-  - Use Case: Privacy-first, offline capable.
-- **Switching:** Users can toggle between these engines instantly via the UI.
-
-
-
----
-
-## 🧠 The "Brain" Logic: How RAG Works
-
-RAG (**R**etrieval **A**ugmented **G**eneration) is the core algorithm powering DocMind.
-
-![RAG Process Flow](assets/rag_process_flow_light.png)
-
-### **Phase 1: Ingestion (Learning)**
-1. **Upload:** You upload a PDF (e.g., "Holiday List.pdf").
-2. **Chunking:** The backend splits it into small pieces (e.g., 1000 characters each).
-3. **Embedding:** It sends each piece to the embedding model (OpenAI or Ollama). It replies with a list of numbers (a vector) representing the *meaning* of that text.
-4. **Storage:** We save the text + the numbers in **ChromaDB**.
-
-### **Phase 2: Retrieval (Thinking)**
-1. **Question:** You ask "What are the holidays?"
-2. **Vectorization:** We convert your question into numbers using the same embedding model.
-3. **Similarity Search:** ChromaDB compares your question's numbers against all stored document numbers to find the closest matches (Cosine Similarity).
-4. **Context Assembly:** We grab the top 3 matching text chunks.
-
-### **Phase 3: Generation (Answering)**
-1. **Prompt Construction:** We send a prompt to the LLM:
-   > "Here is some context from a document: [Context Chunks]
-   > User Question: [Your Question]
-   > Answer the question using ONLY the context provided."
-2. **Response:** The AI writes the answer.
-3. **Display:** The frontend shows you the answer.
-
----
-
-## 🛠️ Folder Structure Map
-
-```bash
-docmind-ai/
-├── frontend/               # Next.js UI Application
-│   ├── app/                # Pages & Routes
-│   └── components/         # React Components (Chat, Inspector)
-│
-├── backend/                # FastAPI Application
-│   ├── main.py             # API Entry point
-│   └── services/           # Business Logic
-│       ├── ingestion.py    # PDF Processing logic
-│       ├── llm.py          # Dual-model switching logic
-│       └── vector_store.py # ChromaDB interaction logic
-│
-├── chromadb-admin/         # The Admin Dashboard UI
-│   └── src/                # Admin Panel Code
-│
-
-└── docker-compose.yml      # Orchestration Config
+```mermaid
+graph TD
+    User([👤 User]) -->|Upload PDF| Frontend[NEXT.js Interface]
+    User -->|Chat| Frontend
+    
+    Frontend -->|REST API| Backend[FastAPI Brain]
+    
+    subgraph "Knowledge Processing"
+        Backend -->|1. Chunking| Ingestion[Ingestion Service]
+        Ingestion -->|2. Embedding| Models{Hybrid Model GW}
+    end
+    
+    subgraph "Memory & Storage"
+        Models -->|3. Store Vectors| Chroma[(ChromaDB)]
+    end
+    
+    subgraph "Inference Providers"
+        Models -->|Cloud| OpenAI[OpenAI GPT-4o]
+        Models -->|Local| Ollama[Ollama / Llama 3]
+    end
+    
+    Backend -->|4. Retrieval| Chroma
+    Backend -->|5. Synthesis| Models
 ```
 
----
-
-## 🧪 Testing The System
-
-You have 3 ways to interact with the brain:
-
-| Interface    | URL                          | Use Case                         |
-| ------------ | ---------------------------- | -------------------------------- |
-| **Main App** | `http://localhost:3000`      | Chatting with documents          |
-| **Admin UI** | `http://localhost:3001`      | Inspecting the database visually |
-| **API Docs** | `http://localhost:8000/docs` | Debugging backend endpoints      |
+### Core Components
+1.  **Next.js Frontend**: A React 18 application with "Neural Inspector" for visualization.
+2.  **FastAPI Backend**: Asynchronous Python service handling document parsing, chunking, and LLM orchestration.
+3.  **ChromaDB**: Local vector database running in Docker, providing persistence for embeddings.
+4.  **Hybrid Model Gateway**: A unified interface that routes requests to either OpenAI (Cloud) or Ollama (Local) based on user preference.
 
 ---
+
+## 2. Low-Level Design (LLD)
+
+### The RAG Pipeline
+Retrieval Augmented Generation is broken into two distinct flows:
+
+**A. Ingestion (The "Learning" Phase)**
+1.  **Parse**: Extract text from PDF using `pypdf`.
+2.  **Chunk**: Split text into 1000-character overlapping segments.
+3.  **Embed**: Convert text to vectors (e.g., 1536-dim for OpenAI, 1024-dim for Ollama).
+4.  **Index**: Store vector + metadata + original text in ChromaDB.
+
+**B. Retrieval (The "Thinking" Phase)**
+1.  **Query**: User asks "What is the holiday policy?".
+2.  **Embed Query**: Convert question to vector.
+3.  **Similarity Search**: Find top 3 document chunks using Cosine Similarity.
+4.  **Synthesize**: Feed chunks + question to the LLM to generate a grounded answer.
+
+### Vector Schema (ChromaDB)
+*   `id`: UUID
+*   `embedding`: `List[float]` (The vector)
+*   `document`: String (Original text chunk)
+*   `metadata`: `{ "source": "employee_handbook.pdf", "page": 12 }`
+
+---
+
+## 3. Decision Log
+
+| Decision | Alternative | Reason for Choice |
+| :--- | :--- | :--- |
+| **FastAPI** | Next.js API Routes | **Ecosystem**. Python is the native language of AI. Libraries like `LangChain`, `Chromadb-client`, and `pypdf` are far more mature in Python than JS. |
+| **ChromaDB** | Pinecone / pgvector | **Simplicity & Privacy**. ChromaDB runs locally as a Docker container (perfect for portfolio). Pinecone is cloud-only; pgvector requires complex Postgres setup. |
+| **Hybrid Architecture** | Cloud Only | **Cost & Privacy**. Allowing local Llama 3 execution demonstrates "Privacy-First" engineering and reduces API costs for large document sets. |
+
+---
+
+## 4. Key Patterns
+
+### The "Neural Inspector"
+A visual observability pattern. Instead of the Vector DB being a black box, the Frontend visualizes the storage state (document counts, embedding dimensions) in real-time, making the system transparent.
+
+### Model Agnostic Interface
+The backend implements the **Strategy Pattern** for LLMs. The rest of the system deals with a generic `LLMProvider` interface, allowing us to swap GPT-4 for Llama 3 or Claude without rewriting business logic.

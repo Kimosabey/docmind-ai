@@ -1,168 +1,94 @@
-# 🧠 DocMind AI - Enterprise RAG System
+# DocMind AI
 
-> **Privacy-First Document Intelligence** | Hybrid Cloud-Local Architecture | Production-Grade RAG
+![UI Mockup](docs/assets/docmind_ui_mockup.png)
 
-![DocMind AI Interface](docs/assets/docmind_ui_mockup.png)
+## Enterprise RAG System with Hybrid Inference
 
 <div align="center">
 
 ![Status](https://img.shields.io/badge/Status-Production_Ready-success?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
-
-**Tech Stack**
-
-![Next.js](https://img.shields.io/badge/Next.js-14-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.109-009688?style=for-the-badge&logo=fastapi&logoColor=white)
-![ChromaDB](https://img.shields.io/badge/ChromaDB-Vector_Store-FF4F00?style=for-the-badge)
-![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4o-412991?style=for-the-badge&logo=openai&logoColor=white)
+![Tech](https://img.shields.io/badge/Stack-FastAPI_Next.js_ChromaDB-009688?style=for-the-badge)
 
 </div>
+
+**DocMind AI** is a privacy-first Document Intelligence platform. It employs **Retrieval-Augmented Generation (RAG)** to allow users to "chat" with their PDF documents. Unlike simple wrappers, DocMind features a **Hybrid Architecture** that toggles seamlessly between Cloud (OpenAI) and Local (Llama 3) inference, ensuring data sovereignty when needed.
 
 ---
 
 ## 🚀 Quick Start
 
-### 1. Prerequisites
-- **Docker** & **Docker Compose**
-- **OpenAI API Key** (from [platform.openai.com](https://platform.openai.com))
+Launch the platform:
 
-### 2. Installation
 ```bash
-# Clone the repository
-git clone https://github.com/Kimosabey/docmind-ai.git
-cd docmind-ai
-
-# Configure Environment
-cp .env.example .env
-# Edit .env and set OPENAI_API_KEY=sk-your-actual-key-here
-```
-
-### 3. Start Services
-```bash
-# Start Backend Services (API + ChromaDB)
+# 1. Start Backend (API + Vector DB)
 docker-compose up -d --build
 
-# Start Frontend
-cd frontend
-npm install
-npm run dev
+# 2. Start Frontend (UI)
+cd frontend && npm install && npm run dev
 ```
 
-### 4. Access Application
-👉 **[http://localhost:3000](http://localhost:3000)**
+> **Detailed Setup**: See [GETTING_STARTED.md](./docs/GETTING_STARTED.md).
 
 ---
 
-## 📸 Screenshots
+## 📸 Demo & Architecture
 
-### Neural Inspector (Monitoring)
+### RAG Pipeline Flow
+![RAG Flow](docs/assets/rag_pipeline_flow.png)
+*Ingestion -> Chunking -> Embedding -> Vector Store -> Generation*
+
+### Hybrid System Architecture
+![Architecture](docs/assets/docmind_system_architecture_hybrid.png)
+*FastAPI Bridge toggling between OpenAI and Local Llama 3*
+
+### Neural Inspector
 ![Neural Inspector](docs/assets/docmind_neural_inspector_mockup.png)
-*Real-time vector storage and system metrics visualization*
+*Real-time observability into the contents of the Vector Database*
 
-### Multi-Model Architecture
-![Model Architecture](docs/assets/multi_model_architecture.png)
-*Hybrid cloud-local inference pipeline*
+> **Deep Dive**: See [ARCHITECTURE.md](./docs/ARCHITECTURE.md) for chunking strategies.
 
 ---
 
 ## ✨ Key Features
 
-### 🚀 Core Capabilities
-- **Multi-Model Support**: Toggle between GPT-4o mini (cloud) and Llama 3 (local/server).
-- **Smart Document Processing**: Advanced parsing with context-aware chunking.
-- **Semantic Search**: Vector-based similarity search using ChromaDB.
-- **Neural Inspector**: Real-time debugging of the knowledge base.
-
-### 🏢 Enterprise Ready
-- **Privacy-First**: Local vector storage (ChromaDB) ensuring data sovereignty.
-- **Scalable**: Async FastAPI backend with connection pooling.
-- **Containerized**: Full Docker orchestration.
+*   **🧠 Hybrid Brain**: Switch between **GPT-4o** (Cloud) and **Llama 3** (Local) instantly.
+*   **📚 RAG Pipeline**: Production-grade Recursive Character Splitting (1000/200).
+*   **🔍 Neural Inspector**: Visual debugging tool to see what's inside your Vector DB.
+*   **🔒 Privacy First**: Fully local vector storage using self-hosted **ChromaDB**.
 
 ---
 
-## 🏗️ Architecture
+## 📚 Documentation
 
-![System Architecture](docs/assets/docmind_system_architecture_hybrid.png)
-
-### RAG Pipeline Flow
-
-![RAG Pipeline](docs/assets/rag_pipeline_flow.png)
-
-1. **Document Ingestion**: PDF → Text Extraction → Chunking (1000 chars, 200 overlap).
-2. **Embedding Generation**: Text Chunks → OpenAI Embeddings (`text-embedding-3-small`) → 768D Vectors.
-3. **Vector Storage**: Vectors + Metadata → ChromaDB (Persistent).
-4. **Query Processing**: Question → Embedding → Similarity Search (Top 3 chunks).
-5. **Answer Generation**: Context + Question → LLM → Grounded Answer.
+| Document | Description |
+| :--- | :--- |
+| [**System Architecture**](./docs/ARCHITECTURE.md) | Chunking, Embeddings, and HLD. |
+| [**Getting Started**](./docs/GETTING_STARTED.md) | Setup guide for Cloud vs Local mode. |
+| [**Failure Scenarios**](./docs/FAILURE_SCENARIOS.md) | Handling "Hallucinations" and Rate Limits. |
+| [**Interview Q&A**](./docs/INTERVIEW_QA.md) | "What is RAG?" and "Why Vector DBs?". |
 
 ---
 
 ## 🔧 Tech Stack
 
-| Layer | Technology | Purpose |
+| Component | Technology | Role |
 | :--- | :--- | :--- |
-| **Frontend** | Next.js 16 + TypeScript | Server-Side Rendering & UI |
-| **Backend** | FastAPI (Python 3.11) | Async REST API |
-| **Vector DB** | ChromaDB | Local vector storage |
-| **AI - Cloud** | OpenAI GPT-4o mini | Cost-effective reasoning |
-| **AI - Local** | Llama 3 (Ollama) | Privacy-focused inference |
-| **Orchestration** | LangChain / Docker | Pipeline & Container management |
-
----
-
-## 📖 Usage Guide
-
-### 1. Upload & Process
-- Upload PDF documents via the UI.
-- System chunks and embeds text into ChromaDB.
-
-### 2. Chat with Documents
-- Ask questions in natural language.
-- Review source citations for every answer.
-
-### 3. Neural Inspector
-- Click database icon to view system health.
-- Monitor active document count and vector dimensions.
-
----
-
-## 🐛 Troubleshooting
-
-**Backend won't start**
-```bash
-docker-compose up -d --build backend
-docker logs docmind-api
-```
-
-**Ollama Connection**
-Ensure `OLLAMA_HOST=0.0.0.0:11434` if running locally.
-
-**Frontend Errors**
-Clear `.next` cache if hydration errors occur: `rm -rf frontend/.next`.
-
----
-
-## 🚀 Future Enhancements
-
-- [ ] Multi-file upload support
-- [ ] Advanced chunking strategies (Semantic chunking)
-- [ ] Re-ranking for better retrieval precision
-- [ ] Agentic workflows (SQL integration)
-- [ ] Vision support (OCR for scanned PDFs)
-
----
-
-## 📝 License
-
-MIT License - See [LICENSE](./LICENSE) for details
+| **Brain** | **FastAPI (Python)** | LangChain Orchestrator. |
+| **Memory** | **ChromaDB** | Vector Store. |
+| **Intelligence** | **OpenAI / Ollama** | LLM Providers. |
+| **Interface** | **Next.js 14** | React UI. |
 
 ---
 
 ## 👤 Author
 
 **Harshan Aiyappa**  
-Senior Full-Stack Engineer  
-📧 [GitHub](https://github.com/Kimosabey)
+Senior Full-Stack Hybrid Engineer  
+[GitHub Profile](https://github.com/Kimosabey)
 
 ---
 
-**Built with**: Next.js • FastAPI • ChromaDB • OpenAI • Llama 3
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
