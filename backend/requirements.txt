@@ -1,0 +1,12 @@
+fastapi>=0.110.0
+uvicorn>=0.27.0
+python-dotenv>=1.0.1
+python-multipart>=0.0.9
+# Core Lite Dependencies
+langchain-core
+langchain-openai
+langchain-community
+chromadb
+pypdf
+psutil
+langchain-ollama
