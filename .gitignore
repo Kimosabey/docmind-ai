@@ -1,0 +1,25 @@
+# Environment
+.env
+.venv
+venv/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Node
+node_modules/
+.next/
+out/
+build/
+
+# Docker volumes
+chroma_data/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
