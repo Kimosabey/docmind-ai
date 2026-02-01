@@ -1,92 +1,91 @@
 # DocMind AI - Hybrid RAG Intelligence System
 
-> **Hybrid RAG Engine**: Seamlessly toggling between Cloud (OpenAI) and Local (Ollama) inference for enterprise-grade document intelligence.
+![Thumbnail](docs/assets/thumbnail.png)
+
+## Enterprise-Grade Document Intelligence Platform
 
 <div align="center">
 
-![Status](https://img.shields.io/badge/Status-Production_Ready-success?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-100%25_Operational-success?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
+![Tech](https://img.shields.io/badge/Stack-FastAPI_Next.js_ChromaDB-009688?style=for-the-badge)
 
 </div>
 
+**DocMind AI** is a privacy-first **Retrieval-Augmented Generation (RAG)** system designed to bridge the gap between secure local intelligence and high-performance cloud LLMs. It allows users to chat with massive PDF datasets using a **Hybrid Inference Bridge** that preserves data sovereignty while providing citation-backed accuracy.
+
 ---
 
-## Quick Start
+## 🚀 Quick Start
 
-Launch the platform in 3 commands:
+Launch the platform in 2 steps:
 
 ```bash
-# 1. Start Docker Backend (ChromaDB + FastAPI)
+# 1. Start Backend (API + Vector DB)
 docker-compose up -d --build
 
-# 2. Setup Frontend
-cd frontend && npm install
-
-# 3. Start Frontend Dashboard
-npm run dev
+# 2. Start Frontend Dashboard
+cd frontend && npm install && npm run dev
 ```
 
----
-
-## Screenshots / Demo
-
-| ![Hero](./docs/assets/hero_main.png) | ![Dashboard](./docs/assets/dashboard.png) |
-|:---:|:---:|
-| **Smart Document Chat** | **Retrieval Analytics** |
-
-| ![Workflow](./docs/assets/workflow.png) | ![Architecture](./docs/assets/architecture.png) |
-|:---:|:---:|
-| **RAG Hybrid Pipeline** | **Distributed Knowledge System** |
+> **Detailed Setup**: See [GETTING_STARTED.md](./docs/GETTING_STARTED.md).
 
 ---
 
-## Key Features
+## 📸 Demo & Architecture
 
-*   **🧠 Hybrid Brain**: Switch between **GPT-4o** (Cloud) and **Llama 3** (Local) instantly.
-*   **📚 RAG Pipeline**: Production-grade Recursive Character Splitting (1000/200).
-*   **🔍 Neural Inspector**: Visual debugging tool to see what's inside your Vector DB.
-*   **🔒 Privacy First**: Fully local vector storage using self-hosted **ChromaDB**.
+### Smart Document Interface
+![Dashboard](docs/assets/dashboard.png)
+*High-fidelity chat UI with real-time neural indexing telemetry.*
 
----
+### System Architecture
+![Architecture](docs/assets/architecture.png)
+*Hybrid Inference Gateway routing between OpenAI (Cloud) and Ollama (Local).*
 
-## Architecture
+### Neural Inspector
+![Visualizer](docs/assets/hero_main.png)
+*Deep observability into the vector store and semantic document chunks.*
 
-![Architecture](./docs/assets/architecture.png)
-
-### Senior Signal: Why this is hard
-*   **Hybrid Inference Abstraction**: Built a provider-agnostic interface to swap LLMs (Local vs Cloud) without modifying the core RAG logic.
-*   **Search Optimization**: Implemented **Hybrid Search** combining Semantic (ChromaDB Vector) and Path-based (Metadata) filtering to eliminate hallucinations.
-*   **Semantic Continuity**: Engineered a recursive splitting strategy with a 200-character overlap to preserve meaning across storage boundaries.
+> **Deep Dive**: See [ARCHITECTURE.md](./docs/ARCHITECTURE.md) for Chunking Logic and Decision Logs.
 
 ---
 
-## Testing & Scripts
+## ✨ Key Features
 
-```bash
-# Run Backend API Tests
-pytest
-
-# Test Vector Store Connectivity
-python scripts/test_chroma.py
-
-# Benchmark Retrieval Accuracy
-python scripts/benchmark_rag.py
-```
+*   **🧠 Hybrid Brain**: Switch between **GPT-4o** and **Llama 3** instantly.
+*   **📚 RAG Pipeline**: Professional recursive splitting (1000/200 overlap).
+    ![Pipeline](docs/assets/workflow.png)
+*   **🔍 High-Precision Search**: Hybrid semantic + metadata filtering.
+*   **🔒 Air-Gapped Ready**: Fully local vector storage using **ChromaDB**.
 
 ---
 
-## Documentation
+## 🏗️ The Intelligence Journey
+
+Understanding how a PDF becomes a conversational agent:
+
+![Workflow](docs/assets/workflow.png)
+
+1.  **Ingest**: Document parsed and cleaned via `pypdf`.
+2.  **Chunk**: Segmented into 1000-char overlapping blocks.
+3.  **Embed**: Converted to high-dimensional vectors.
+4.  **Index**: Stored in ChromaDB with page-level metadata.
+5.  **Query**: System retrieves top chunks to ground LLM responses.
+
+---
+
+## 📚 Documentation
 
 | Document | Description |
 | :--- | :--- |
-| [**System Architecture**](./docs/ARCHITECTURE.md) | Chunking, Embeddings, and HLD. |
-| [**Getting Started**](./docs/GETTING_STARTED.md) | Setup guide for Cloud vs Local mode. |
-| [**Failure Scenarios**](./docs/FAILURE_SCENARIOS.md) | Handling "Hallucinations" and Rate Limits. |
-| [**Interview Q&A**](./docs/INTERVIEW_QA.md) | "What is RAG?" and "Why Vector DBs?". |
+| [**System Architecture**](./docs/ARCHITECTURE.md) | Vectors, Chunking, and Provider Abstraction. |
+| [**Getting Started**](./docs/GETTING_STARTED.md) | Enviroment setup (Cloud vs Local mode). |
+| [**Failure Scenarios**](./docs/FAILURE_SCENARIOS.md) | Hallucination mitigation and grounding logic. |
+| [**Interview Q&A**](./docs/INTERVIEW_QA.md) | RAG strategy and technical justifications. |
 
 ---
 
-## Tech Stack
+## 🔧 Tech Stack
 
 | Component | Technology | Role |
 | :--- | :--- | :--- |
@@ -97,24 +96,14 @@ python scripts/benchmark_rag.py
 
 ---
 
-## Future Enhancements
-*   [ ] Integration with **Multi-Modal Embeddings** (Images + Text).
-*   [ ] Support for **Knowledge Graph** (Neo4j) hybrid retrieval.
-
----
-
-## License
-Licensed under the MIT License.
-
----
-
 ## 👤 Author
 
 **Harshan Aiyappa**  
-Senior Full-Stack Hybrid AI Engineer  
-Voice AI • Distributed Systems • Infrastructure
+Senior Full-Stack Hybrid Engineer  
+[GitHub Profile](https://github.com/Kimosabey)
 
-[![Portfolio](https://img.shields.io/badge/Portfolio-kimo--nexus.vercel.app-00C7B7?style=flat&logo=vercel)](https://kimo-nexus.vercel.app/)
-[![GitHub](https://img.shields.io/badge/GitHub-Kimosabey-black?style=flat&logo=github)](https://github.com/Kimosabey)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Harshan_Aiyappa-blue?style=flat&logo=linkedin)](https://linkedin.com/in/harshan-aiyappa)
-[![X](https://img.shields.io/badge/X-@HarshanAiyappa-black?style=flat&logo=x)](https://x.com/HarshanAiyappa)
+---
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
