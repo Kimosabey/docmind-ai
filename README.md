@@ -1,13 +1,31 @@
-# DocMind AI
+# DocMind AI - Hybrid RAG Intelligence System
 
 > **Hybrid RAG Engine**: Seamlessly toggling between Cloud (OpenAI) and Local (Ollama) inference for enterprise-grade document intelligence.
 
 <div align="center">
 
 ![Status](https://img.shields.io/badge/Status-Production_Ready-success?style=for-the-badge)
+![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
 ![Tech](https://img.shields.io/badge/Stack-FastAPI_Next.js_ChromaDB-009688?style=for-the-badge)
 
 </div>
+
+---
+
+## 🚀 Quick Start
+
+Launch the platform in 3 commands:
+
+```bash
+# 1. Start Docker Backend (ChromaDB + FastAPI)
+docker-compose up -d --build
+
+# 2. Setup Frontend
+cd frontend && npm install
+
+# 3. Start Frontend Dashboard
+npm run dev
+```
 
 ---
 
@@ -23,22 +41,6 @@
 
 ---
 
-## 🚀 Quick Start
-
-Launch the platform:
-
-```bash
-# 1. Start Backend (API + Vector DB)
-docker-compose up -d --build
-
-# 2. Start Frontend (UI)
-cd frontend && npm install && npm run dev
-```
-
-> **Detailed Setup**: See [GETTING_STARTED.md](./docs/GETTING_STARTED.md).
-
----
-
 ## ✨ Key Features
 
 *   **🧠 Hybrid Brain**: Switch between **GPT-4o** (Cloud) and **Llama 3** (Local) instantly.
@@ -48,12 +50,31 @@ cd frontend && npm install && npm run dev
 
 ---
 
-## 🎯 Senior Engineer Signals (Self-Audit)
+## 🧠 Architecture & Senior Signals
 
-*   **Hybrid Inference**: Implementation of an abstraction layer to swap between OpenAI and Local LLMs without code changes.
-*   **Search Optimization**: Hybrid Search strategy combining Vector embeddings and Keyword indexing for high precision.
-*   **Data Sovereignty**: Local-first architecture ensuring sensitive documents never leave the client infrastructure.
-*   **Observability**: Integrated analytics to monitor retrieval accuracy and latency across different LLM backends.
+### System Design
+![Architecture](docs/assets/architecture.png)
+
+### 🎯 Why this is a "Senior" Project
+*   **Hybrid Inference Abstraction**: Built a provider-agnostic interface to swap LLMs (Local vs Cloud) without modifying the core RAG logic.
+*   **Search Optimization**: Implemented **Hybrid Search** combining Semantic (ChromaDB Vector) and Path-based (Metadata) filtering to eliminate hallucinations.
+*   **Data Sovereignty**: Designed for air-gapped environments; all documents remain on the client's infrastructure via local vector stores.
+*   **Advanced Chunking**: Utilized **Recursive Character Text Splitting** with overlap to preserve semantic context across chunk boundaries.
+
+---
+
+## 🧪 Testing & Verification
+
+```bash
+# Run Backend API Tests
+pytest
+
+# Test Vector Store Connectivity
+python scripts/test_chroma.py
+
+# Benchmark Retrieval Accuracy
+python scripts/benchmark_rag.py
+```
 
 ---
 
@@ -68,8 +89,36 @@ cd frontend && npm install && npm run dev
 
 ---
 
+## 🔧 Tech Stack
+
+| Component | Technology | Role |
+| :--- | :--- | :--- |
+| **Brain** | **FastAPI (Python)** | LangChain Orchestrator. |
+| **Memory** | **ChromaDB** | Local Vector Store. |
+| **Intelligence** | **OpenAI / Ollama** | LLM Inference Backends. |
+| **Interface** | **Next.js 14** | Enterprise Dashboard. |
+
+---
+
+## 🔮 Future Enhancements
+*   [ ] Integration with **Multi-Modal Embeddings** (Images + Text).
+*   [ ] Implement **Self-RAG** (Reflective retrieval correction).
+*   [ ] Support for **Knowledge Graph** (Neo4j) hybrid retrieval.
+
+---
+
 ## 👤 Author
 
 **Harshan Aiyappa**  
-Senior Full-Stack Hybrid Engineer  
-[Portfolio](https://kimo-nexus.vercel.app/) • [GitHub Profile](https://github.com/Kimosabey)
+Senior Full-Stack Hybrid AI Engineer  
+Voice AI • Distributed Systems • Infrastructure
+
+[![Portfolio](https://img.shields.io/badge/Portfolio-kimo--nexus.vercel.app-00C7B7?style=flat&logo=vercel)](https://kimo-nexus.vercel.app/)
+[![GitHub](https://img.shields.io/badge/GitHub-Kimosabey-black?style=flat&logo=github)](https://github.com/Kimosabey)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Harshan_Aiyappa-blue?style=flat&logo=linkedin)](https://linkedin.com/in/harshan-aiyappa)
+[![X](https://img.shields.io/badge/X-@HarshanAiyappa-black?style=flat&logo=x)](https://x.com/HarshanAiyappa)
+
+---
+
+## 📝 License
+Licensed under the MIT License.
