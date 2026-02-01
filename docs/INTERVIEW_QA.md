@@ -1,10 +1,10 @@
-# Interview Q&A: DocMind AI
+# 🎓 Interview Q&A: DocMind AI
 
 > Strategic talking points for RAG and AI engineering interviews.
 
 ---
 
-## 1. "Tell me about this project..." (The 2-Minute Pitch)
+## 1. "Tell me about this project..."
 
 "DocMind AI is a privacy-first RAG (Retrieval-Augmented Generation) platform. It allows users to chat with complex PDF documents using either Cloud models like GPT-4 or Local models like Llama 3. 
 
@@ -12,7 +12,7 @@ The core of the project is the **Hybrid Inference Bridge**. I built a system tha
 
 ---
 
-## 2. "What was the hardest technical challenge?"
+## 2. "What was the hardest challenge?"
 
 "The hardest challenge was **Context Precision and Grounding**. 
 

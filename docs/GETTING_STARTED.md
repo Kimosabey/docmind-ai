@@ -1,6 +1,8 @@
-# Getting Started: DocMind AI
+# 🚀 Getting Started: DocMind AI
 
 > Instructions for deploying the Hybrid RAG platform locally.
+
+![Dashboard Preview](./assets/dashboard.png)
 
 ---
 

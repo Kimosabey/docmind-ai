@@ -1,4 +1,4 @@
-# System Architecture: DocMind AI
+# 🏗️ System Architecture: DocMind AI
 
 > High-performance RAG orchestration with hybrid cloud/local inference capabilities.
 

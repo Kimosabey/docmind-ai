@@ -1,6 +1,8 @@
-# Failure Scenarios & Resilience: DocMind AI
+# 🛡️ Failure Scenarios & Resilience: DocMind AI
 
 > Documenting edge cases and system safeguards for the RAG pipeline.
+
+![RAG Workflow](./assets/workflow.png)
 
 ---
 
