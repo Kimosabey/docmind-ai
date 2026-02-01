@@ -1,71 +1,56 @@
-# 🚀 Getting Started with DocMind AI
+# Getting Started: DocMind AI
 
-> **Prerequisites**
-> *   **Docker Desktop** (Engine + Compose)
-> *   **OpenAI API Key** (Required for Cloud Mode)
-> *   *(Optional)* **Ollama** running locally for Privacy Mode
-
-## 1. Environment Setup
-
-**Required Variables (`.env`)**
-Create a `.env` file in the project root:
-```ini
-OPENAI_API_KEY=sk-your-actual-key-here
-LLM_PROVIDER=openai 
-# Options: 'openai' or 'ollama'
-```
+> Instructions for deploying the Hybrid RAG platform locally.
 
 ---
 
-## 2. Installation & Launch
+## 1. Prerequisites
 
-### Step 1: Start Backend (FastAPI + ChromaDB)
-We utilize Docker for the backend services to ensure a consistent Python/Database environment.
+*   **Docker Desktop**: Required for the API and Vector DB services.
+*   **Node.js**: v18+ for the Next.js frontend.
+*   **OpenAI API Key**: Required if using Cloud mode.
+*   **Ollama**: (Optional) For running models locally on your GPU/CPU.
 
+---
+
+## 2. Installation
+
+### Setup Backend
 ```bash
+# Start Docker services (FastAPI + ChromaDB)
 docker-compose up -d --build
 ```
-*Wait ~10s for ChromaDB to initialize on port 8001.*
 
-### Step 2: Start Frontend (Next.js)
-We run the frontend locally for the best developer experience (HMR).
-
+### Setup Frontend
 ```bash
 cd frontend
 npm install
-npm run dev
 ```
 
 ---
 
-## 3. Usage Guide
+## 3. Environment Variables
 
-### A. Access Interface
-Go to **`http://localhost:3000`**.
+Create a root `.env` file to configure the LLM provider.
 
-### B. Ingest a Document
-1.  Click **"Upload PDF"** in the sidebar.
-2.  Select a sample document (e.g., a Resume or Handbook).
-3.  Watch the "Neural Inspector" count increase as chunks are indexed.
-
-### C. Ask Questions
-Type in the chat box: *"Summarize the document for me."*
-
-### D. Switch "Brains" (Cloud vs Local)
-1.  Stop the docker container.
-2.  Edit `.env` -> set `LLM_PROVIDER=ollama`.
-3.  Restart. (Requires Ollama running on host).
+| Variable | Default | Description |
+| :--- | :--- | :--- |
+| `OPENAI_API_KEY` | `N/A` | Your OpenAI secret key. |
+| `LLM_PROVIDER` | `openai` | Set to `openai` or `ollama`. |
+| `CHROMA_PORT` | `8001` | Port for the vector database. |
 
 ---
 
 ## 4. Running Tests
 
-### Backend Tests
+### Automated Suite
 ```bash
+# Run pytest within the running Docker container
 docker exec -it docmind-api pytest
 ```
 
-### Manual API Test
-Open the Swagger UI at **`http://localhost:8000/docs`** to test endpoints directly.
-*   **POST /ingest**: Upload a file.
-*   **POST /chat**: Send a query.
+### Manual Verification
+1.  Navigate to `http://localhost:3000`.
+2.  Upload a PDF.
+3.  Ask: "What is this document about?".
+4.  Verification is successful if the AI cites specific sections from the PDF.

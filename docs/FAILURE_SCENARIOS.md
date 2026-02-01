@@ -1,42 +1,38 @@
-# 🛡️ Failure Scenarios & Resilience
+# Failure Scenarios & Resilience: DocMind AI
 
-> "RAG Systems are only as good as their retrieval."
-
-This document details how DocMind AI handles hallucinations, context window limits, and service failures.
-
-## 1. Failure Matrix
-
-| Component | Failure Mode | Impact | Recovery Strategy |
-| :--- | :--- | :--- | :--- |
-| **OpenAI API** | Rate Limit (429) | **Critical**. Chat fails. | **Exponential Backoff**. The `LLMService` retries request 3 times with increasing delays before failing gracefully. |
-| **ChromaDB** | Container Crash | **High**. Retrieval fails. | **Restart Policy**. Docker Compose is set to `restart: always`. API throws 503 until DB is back. |
-| **PDF Ingestion** | Encrypted/Corrupt File | **Minor**. Upload fails. | **Validation**. The Ingestion pipeline checks for file validity/password protection before attempting parse, returning a clean 400 error. |
+> Documenting edge cases and system safeguards for the RAG pipeline.
 
 ---
 
-## 2. Deep Dive: Handling "Hallucinations"
+## 1. Fault Analysis
 
-### The Problem
-LLMs are confident liars. If the document doesn't contain the answer, they might make one up.
-
-### The Solution: Groundedness Check
-We modify the System Prompt to enforce strict grounding:
-> "You are a helpful assistant. Use ONLY the following context to answer. If you cannot answer using the context, say 'I cannot find the answer in the document'."
-
-**Evidence of Success**:
-Try asking "Who is the President of Mars?".
-*   **Result**: "I cannot find the answer in the document." (Instead of making up a fictional president).
+| Scenario | Impact | Safeguard Status |
+| :--- | :--- | :--- |
+| **OpenAI Rate Limit** | Chat becomes unavailable. | ** Exponential Backoff** implemented in `LLMService`. |
+| **Corrupt PDF Upload** | Ingestion pipeline crashes. | ** File Type Verification** prior to chunking. |
+| **ChromaDB Down** | Search returns 0 results. | ** Docker Health Checks** auto-restart the container. |
+| **Hallucination** | AI makes up facts. | ** System Prompt Grounding** forbids external info. |
 
 ---
 
-## 3. Resilience Testing
+## 2. Recovery Strategy
 
-### Test 1: The "Gibberish" Document
-1.  Upload a PDF containing random symbols.
-2.  **Expectation**: The system chunks it, but answering questions returns "I cannot find the answer..." or low confidence scores. It does NOT crash the chunker.
+### Handling Vector Store Failures
+If ChromaDB is unreachable, the system triggers a `503 Service Unavailable` with a clean UI notification. Data is persisted to a Docker volume, ensuring that when the container restarts, all previously ingested documents remain searchable.
 
-### Test 2: Database Kill
-1.  Ingest a document.
-2.  `docker stop docmind-chromadb`.
-3.  Ask a question.
-4.  **Expectation**: The Chat UI shows a red toast notification: "Vector Database Unavailable". The app remains responsive.
+### Cold Start Mitigation
+When switching from OpenAI to Local Llama 3, the first query can take ~30s for the model to load into VRAM. We implemented a **"Model Warming" status** in the UI to manage user expectations during this transition.
+
+---
+
+## 3. Chaos Testing
+
+### The "President of Mars" Test
+*   **Goal**: Verify strict grounding.
+*   **Action**: Ask a question unrelated to the document (e.g., "What is the capital of France?").
+*   **Expected**: The system must say "I cannot find this in the document," even if the LLM knows the answer from its training data.
+
+### Large Document Stress Test
+*   **Goal**: Verify chunking stability.
+*   **Action**: Upload a 500+ page technical manual.
+*   **Expected**: The system parses without memory overflow and maintains retrieval relevance using high-dimensional indexing.

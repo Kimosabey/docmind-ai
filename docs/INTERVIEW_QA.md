@@ -1,36 +1,30 @@
-# 🎤 Interview Cheat Sheet: DocMind AI
+# Interview Q&A: DocMind AI
 
-## 1. The Elevator Pitch (2 Minutes)
-
-"DocMind AI is a production-grade **RAG (Retrieval-Augmented Generation)** system designed for Privacy-First document intelligence.
-
-It solves the 'context window' problem of LLMs by using a **Vector Database (ChromaDB)** as long-term memory.
-1.  **Ingestion**: It chunks and embeds PDFs into vectors.
-2.  **Hybrid Brain**: It enables switching between Cloud Models (GPT-4o) for accuracy and Local Models (Llama 3) for privacy.
-3.  **Observability**: Unlike black-box RAG demos, I built a 'Neural Inspector' that visualizes the vector store's health in real-time."
+> Strategic talking points for RAG and AI engineering interviews.
 
 ---
 
-## 2. "Explain Like I'm 5" (The Librarian)
+## 1. "Tell me about this project..." (The 2-Minute Pitch)
 
-"Imagine a Library (The Document) and a very smart Librarian (The AI).
-*   **The Problem**: The Librarian cannot memorize every book in the world instantly.
-*   **My Solution**: I created a card catalog (ChromaDB).
-*   **Ingestion**: When a new book arrives, I photocopy the pages and file them in the catalog.
-*   **Retrieval**: When you ask a question, I don't read the whole book. I look up the specific page in the catalog, hand *just that page* to the Librarian, and say 'Read this and answer the user'. This is faster and cheaper."
+"DocMind AI is a privacy-first RAG (Retrieval-Augmented Generation) platform. It allows users to chat with complex PDF documents using either Cloud models like GPT-4 or Local models like Llama 3. 
+
+The core of the project is the **Hybrid Inference Bridge**. I built a system that can toggle between high-performance cloud APIs and fully offline local inference. It handles the entire AI lifecycle: from intelligent text chunking and vector embedding to semantic search and grounded answer synthesis. I also built a 'Neural Inspector' on the frontend so you can actually see what's happening inside the Vector Database in real-time."
 
 ---
 
-## 3. Tough Technical Questions
+## 2. "What was the hardest technical challenge?"
 
-### Q: How do you handle Context Window limits?
-**A:** "Instead of stuffing the entire 50-page PDF into the prompt (which is expensive and slow), I use **Semantic Search**.
-I convert the user's question into a vector and find the 'Top 3' most similar text chunks (Cosine Similarity). I only send these 3 chunks to the LLM. This keeps the prompt small and focused."
+"The hardest challenge was **Context Precision and Grounding**. 
 
-### Q: Why ChromaDB? Why not Pinecone?
-**A:** "Privacy and Portability. Pinecone is a managed cloud service. If I'm processing sensitive legal documents, sending vectors to the cloud is a risk. ChromaDB runs locally in a Docker container, ensuring data sovereignty—the data never leaves the server unless explicitly sent to OpenAI."
+Early on, the AI would hallucinate if it couldn't find the answer in the PDF. I had to engineer a strict system prompt and fine-tune my **Chunking Strategy** (using a 1000-character recursive splitter with a 200-character overlap). This ensured that even if a sentence was split across the storage boundary, the semantic context remained intact. Proving that the AI *won't* answer outside its given context was a major milestone for enterprise production readiness."
 
-### Q: How do you split the text (Chunking Strategy)?
-**A:** "I use a **Recursive Character Text Splitter** with a chunk size of 1000 and overlap of 200.
-*   **Why 1000?**: It's roughly 1-2 paragraphs—enough context to answer a question.
-*   **Why Overlap?**: It prevents cutting a sentence in half at the boundary. The overlap ensures continuity of meaning between chunks."
+---
+
+## 3. "Why did you choose this specific tech stack?"
+
+### Why FastAPI & ChromaDB?
+*   **Vector Performance**: ChromaDB is lightweight, open-source, and runs perfectly in a containerized environment, which is ideal for "local-first" AI applications.
+*   **Python AI Ecosystem**: Using FastAPI was a deliberate choice to leverage the mature Python AI libraries (`pydantic`, `langchain`, `ollama-python`) which are far ahead of the JS ecosystem for RAG.
+
+### Why Next.js 14 for the Frontend?
+*   **Streaming UI**: Next.js allows for smooth, stream-based chat interfaces. I used it to implement real-time token streaming so the response feels instantaneous to the user.

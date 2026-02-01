@@ -5,7 +5,6 @@
 <div align="center">
 
 ![Status](https://img.shields.io/badge/Status-Production_Ready-success?style=for-the-badge)
-![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
 ![Tech](https://img.shields.io/badge/Stack-FastAPI_Next.js_ChromaDB-009688?style=for-the-badge)
 
 </div>
@@ -13,7 +12,6 @@
 ---
 
 ## 🚀 Quick Start
-
 Launch the platform in 3 commands:
 
 ```bash
@@ -29,20 +27,20 @@ npm run dev
 
 ---
 
-## 🖼️ Visual Gallery (V3 Standard)
+## 🖼️ Screenshots / Demo
+Standard assets following the [V3 Portfolio Asset Planner](../../PORTFOLIO_ASSET_PLANNER.md).
 
-| ![Hero](docs/assets/hero_main.png) | ![Dashboard](docs/assets/dashboard.png) |
+| ![Hero](./docs/assets/hero_main.png) | ![Dashboard](./docs/assets/dashboard.png) |
 |:---:|:---:|
 | **Smart Document Chat** | **Retrieval Analytics** |
 
-| ![Workflow](docs/assets/workflow.png) | ![Architecture](docs/assets/architecture.png) |
+| ![Workflow](./docs/assets/workflow.png) | ![Architecture](./docs/assets/architecture.png) |
 |:---:|:---:|
 | **RAG Hybrid Pipeline** | **Distributed Knowledge System** |
 
 ---
 
 ## ✨ Key Features
-
 *   **🧠 Hybrid Brain**: Switch between **GPT-4o** (Cloud) and **Llama 3** (Local) instantly.
 *   **📚 RAG Pipeline**: Production-grade Recursive Character Splitting (1000/200).
 *   **🔍 Neural Inspector**: Visual debugging tool to see what's inside your Vector DB.
@@ -50,21 +48,19 @@ npm run dev
 
 ---
 
-## 🧠 Architecture & Senior Signals
+## 🧠 Architecture
+DocMind features a hybrid inference bridge that allows it to operate either via high-performance cloud APIs or completely offline using quantized local models.
 
-### System Design
-![Architecture](docs/assets/architecture.png)
+![Architecture](./docs/assets/architecture.png)
 
-### 🎯 Why this is a "Senior" Project
+### 🎯 Senior Engineer Signals
 *   **Hybrid Inference Abstraction**: Built a provider-agnostic interface to swap LLMs (Local vs Cloud) without modifying the core RAG logic.
 *   **Search Optimization**: Implemented **Hybrid Search** combining Semantic (ChromaDB Vector) and Path-based (Metadata) filtering to eliminate hallucinations.
 *   **Data Sovereignty**: Designed for air-gapped environments; all documents remain on the client's infrastructure via local vector stores.
-*   **Advanced Chunking**: Utilized **Recursive Character Text Splitting** with overlap to preserve semantic context across chunk boundaries.
 
 ---
 
-## 🧪 Testing & Verification
-
+## 🧪 Testing & Scripts
 ```bash
 # Run Backend API Tests
 pytest
@@ -79,6 +75,7 @@ python scripts/benchmark_rag.py
 ---
 
 ## 📚 Documentation
+Strict compliance with [PORTFOLIO_DOCS_STANDARD.md](../../PORTFOLIO_DOCS_STANDARD.md).
 
 | Document | Description |
 | :--- | :--- |
@@ -90,7 +87,6 @@ python scripts/benchmark_rag.py
 ---
 
 ## 🔧 Tech Stack
-
 | Component | Technology | Role |
 | :--- | :--- | :--- |
 | **Brain** | **FastAPI (Python)** | LangChain Orchestrator. |
@@ -102,8 +98,12 @@ python scripts/benchmark_rag.py
 
 ## 🔮 Future Enhancements
 *   [ ] Integration with **Multi-Modal Embeddings** (Images + Text).
-*   [ ] Implement **Self-RAG** (Reflective retrieval correction).
 *   [ ] Support for **Knowledge Graph** (Neo4j) hybrid retrieval.
+
+---
+
+## 📝 License
+Licensed under the MIT License.
 
 ---
 
@@ -117,8 +117,3 @@ Voice AI • Distributed Systems • Infrastructure
 [![GitHub](https://img.shields.io/badge/GitHub-Kimosabey-black?style=flat&logo=github)](https://github.com/Kimosabey)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Harshan_Aiyappa-blue?style=flat&logo=linkedin)](https://linkedin.com/in/harshan-aiyappa)
 [![X](https://img.shields.io/badge/X-@HarshanAiyappa-black?style=flat&logo=x)](https://x.com/HarshanAiyappa)
-
----
-
-## 📝 License
-Licensed under the MIT License.
